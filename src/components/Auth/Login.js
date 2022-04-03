@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "react-bootstrap";
 
 const Login = () => {
-        console.dir(useAuth0());
+  console.dir(useAuth0());
   const { loading, loginWithRedirect } = useAuth0();
   if (loading) {
     return <div>Loading...</div>;

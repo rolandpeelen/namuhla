@@ -3,6 +3,6 @@ export const AUTH_CONFIG = {
   clientId: "CvZej0OzKCWfDrlGpU49UZKeU6jwfhsG",
   callbackUrl: "http://localhost:3000/callback",
   afterLogout: "http://localhost:3000",
-  audience: "https://www.amuh.la",
+  audience: "http://localhost:3000",
   scope: "openid profile email",
 };

@@ -1,52 +1,37 @@
+import { useQuery } from "@apollo/client";
 import React from "react";
+import CurrentDaily from "./CurrentDaily";
+import DatePicker from "./DatePicker";
 
-import Header from "./Header";
-import Login from "../components/Auth/Login";
-
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import { WebSocketLink } from "@apollo/client/link/ws";
-
-import { useAuth0 } from "@auth0/auth0-react";
-import useAccessToken from "../hooks/useAccessToken";
-
-const createApolloClient = (authToken) => {
-  return new ApolloClient({
-    link: new WebSocketLink({
-      uri: "wss://nearby-mammal-93.hasura.app/v1/graphql",
-      options: {
-        reconnect: true,
-        connectionParams: {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        },
-      },
-    }),
-    cache: new InMemoryCache(),
-  });
-};
+import queries from "../utils/queries.js";
+import { getToday, hasDailies } from "../utils/lib.js";
 
 const App = () => {
-  const authToken = useAccessToken();
-  const { loading, logout } = useAuth0();
+  const [date, setDate] = React.useState(() => getToday());
+  const { loading, error, data } = useQuery(queries.GET_DAILIES);
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (!!error) {
+    console.log(error);
+    return "error";
   }
 
-  if (!authToken) {
-    return <Login />;
+  if (!!loading) {
+    return "Loading";
   }
-  const client = createApolloClient(authToken);
-  return (
-    <ApolloProvider client={client}>
-      <div>
-        <Header logoutHandler={logout} />
-        "Hello"
-        {console.log(client)}
-      </div>
-    </ApolloProvider>
-  );
+
+  if (hasDailies(data)) {
+    return (
+      <>
+        <div>
+          <h4>{date}</h4>
+        </div>
+        <CurrentDaily date={date} data={data} />
+        <DatePicker data={data} date={date} setDate={setDate} />
+      </>
+    );
+  }
+
+  return "Something Horrible Happened";
 };
 
 export default App;

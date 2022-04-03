@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import { authStates } from "../utils/types.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import { AUTH_CONFIG } from "../components/Auth/auth0-variables";
 
 function useAccessToken() {
-  const [authTokjen, setAuthToken] = useState(null);
+  const [state, setState] = useState([authStates.LOADING, null]);
   const { user, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
@@ -15,18 +16,15 @@ function useAccessToken() {
           audience,
           scope,
         });
-        console.log(accessToken);
-        setAuthToken(accessToken);
-      } catch (e) {
-        console.log(e);
-        console.log(e.message);
+        setState([authStates.AUTHORIZED, accessToken]);
+      } catch (error) {
+        setState([authStates.UNAUTHORIZED, error]);
       }
     };
 
     getAccessToken();
   }, [getAccessTokenSilently, user?.sub]);
 
-  return authTokjen;
+  return state;
 }
-
-export default useAccessToken;
+export { useAccessToken };
