@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import React from "react";
 import CurrentDaily from "./CurrentDaily";
 import DatePicker from "./DatePicker";
@@ -9,14 +9,23 @@ import { getToday, hasDailies } from "../utils/lib.js";
 const App = () => {
   const [date, setDate] = React.useState(() => getToday());
   const { loading, error, data } = useQuery(queries.GET_DAILIES);
+  const [insertDailyMutation] = useMutation(queries.INSERT_DAILY);
+
+  React.useEffect(() => {
+    if (data && !hasDailies(data)) {
+      insertDailyMutation({
+        variables: {
+          content:
+            "# Welcome \n Here is your first daily! \n Click me to start editing...",
+        },
+        refetchQueries: [queries.GET_DAILIES],
+      });
+    }
+  }, [loading, data]);
 
   if (!!error) {
     console.log(error);
     return "error";
-  }
-
-  if (!!loading) {
-    return "Loading";
   }
 
   if (hasDailies(data)) {
@@ -31,7 +40,7 @@ const App = () => {
     );
   }
 
-  return "Something Horrible Happened";
+  return "Loading";
 };
 
 export default App;
