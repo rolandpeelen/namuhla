@@ -2,8 +2,14 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import { ButtonGroup, Button } from "react-bootstrap";
 import { useDarkMode } from "../utils/useDarkMode.js";
+import { getTheme, defineThemes } from "../utils/theme.js";
 import remarkGfm from "remark-gfm";
 import styled from "styled-components";
+import { ThemeContext } from "styled-components";
+import rehypeSanitize from "rehype-sanitize";
+import MonacoEditor from "react-monaco-editor";
+import { initVimMode } from "monaco-vim";
+import { VimMode } from "monaco-vim";
 
 const Container = styled.div`
   width: 60%;
@@ -12,8 +18,8 @@ const Container = styled.div`
   align-self: center;
 `;
 
-const Textarea = styled.textarea`
-  width: 100%;
+const MonacoEditorStyled = styled(MonacoEditor)`
+  width: 100% !important;
   display: flex;
   margin-bottom: 25px;
   height: 500px;
@@ -27,12 +33,18 @@ const ButtonGroupStyled = styled(ButtonGroup)`
 `;
 
 const View = ({ id, content, setEditing }) => {
+  const handleKeyDown = (event) => event.keyCode === 13 && setEditing(true);
+  React.useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
   return (
     <Container onClick={(_) => setEditing(true)}>
       <ReactMarkdown
         contentEditable={true}
         children={content}
         remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeSanitize]}
       />
     </Container>
   );
@@ -40,14 +52,41 @@ const View = ({ id, content, setEditing }) => {
 
 const Edit = ({ id, content, onUpdate, setEditing }) => {
   const [localContent, setLocalContent] = React.useState(content);
-  const [theme] = useDarkMode();
+  const [monaco, setMonaco] = React.useState(null);
+  const theme = React.useContext(ThemeContext);
+
+  const editorDidMount = (editor, monaco) => {
+    const vimMode = initVimMode(editor, document.getElementById("status"));
+    //defineThemes(monaco);
+    editor.focus();
+    setMonaco([editor, monaco]);
+  };
+
+  React.useEffect(() => {
+    VimMode.Vim.defineEx("wq", "wq", () => onUpdate(localContent));
+    VimMode.Vim.defineEx("q", "q", () => setEditing(false));
+  }, []);
+
   return (
     <Container>
-      <Textarea
-        theme={theme}
-        defaultValue={localContent}
-        onBlur={(event) => setLocalContent(event.target.value)}
+      <MonacoEditorStyled
+        height="600"
+        id="editor"
+        theme="vs-dark"
+        language="markdown"
+        value={localContent}
+        options={{
+          minimap: {
+            enabled: false,
+          },
+          fontSize: 16,
+          lineNumbers: "relative",
+          wordWrap: "on",
+        }}
+        onChange={(newValue, e) => setLocalContent(newValue)}
+        editorDidMount={editorDidMount}
       />
+      <div id="status" />
       <ButtonGroupStyled>
         <Button variant="secondary" onClick={(event) => setEditing(false)}>
           cancel

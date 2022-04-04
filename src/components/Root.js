@@ -32,7 +32,6 @@ const createApolloClient = (authToken) => {
 };
 
 const GlobalStyles = createGlobalStyle`
-  @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700");
   #root {
     display: flex;
     justify-items: center;
@@ -47,8 +46,9 @@ const GlobalStyles = createGlobalStyle`
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: sans-serif;
-    font-size: 14px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 16px;
+    line-height: 2.0;
     display: flex;
     justify-items: center;
     justify-content: center;
@@ -61,7 +61,7 @@ const GlobalStyles = createGlobalStyle`
 const Root = () => {
   /* Data may contain error, or token, or be null when loading */
   const [state, data] = useAccessToken();
-  const [theme, themeName, toggleTheme, darkModeReady] = useDarkMode();
+  const [theme, toggleTheme, darkModeReady] = useDarkMode();
   const [client, setClient] = React.useState(null);
 
   const { logout } = useAuth0();
@@ -72,7 +72,7 @@ const Root = () => {
 
   if (!darkModeReady) return <div />;
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={getTheme(theme)}>
       <GlobalStyles />
       {state === authStates.LOADING && "Authorizing"}
       {state === authStates.UNAUTHORIZED && <Login />}

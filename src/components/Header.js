@@ -4,7 +4,7 @@ import { Navbar, Button } from "react-bootstrap";
 const Header = ({ logoutHandler, toggleTheme }) => {
   return (
     <Navbar className="justify-content-between">
-      <Navbar.Brand>Amuh.la</Navbar.Brand>
+      <Navbar.Brand>Namuhla</Navbar.Brand>
       <Navbar.Collapse className="justify-content-end">
         <Button
           variant="primary"

@@ -24,7 +24,6 @@ const DailyWrapper = ({ id }) => {
         dateUpdated: new Date().toISOString(),
       },
     }).then((content) => {
-      console.log("Done Updating");
       setUpdating(false);
       setEditing(false);
     });

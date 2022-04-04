@@ -1,4 +1,4 @@
-import { THEME_KEY_LOCALSTORAGE, themes, getTheme } from "../utils/theme.js";
+import { THEME_KEY_LOCALSTORAGE, themes } from "../utils/theme.js";
 
 import React from "react";
 
@@ -9,20 +9,18 @@ const getFromLocalStorage = () => {
 
 export const useDarkMode = () => {
   const [theme, setTheme] = React.useState(themes.LIGHT);
-  const themeProps = React.useMemo(() => getTheme(theme), [theme]);
   const [darkModeReady, setDarkModeReady] = React.useState(false);
 
-  const toggleTheme = () =>
-    setTheme((current) => {
-      const newTheme = current === themes.LIGHT ? themes.DARK : themes.LIGHT;
-      localStorage.setItem(THEME_KEY_LOCALSTORAGE, newTheme);
-      return newTheme;
-    });
+  const toggleTheme = React.useCallback(() => {
+    const newTheme = theme === themes.LIGHT ? themes.DARK : themes.LIGHT;
+    localStorage.setItem(THEME_KEY_LOCALSTORAGE, newTheme);
+    setTheme(newTheme);
+  }, [theme, setTheme]);
 
   React.useEffect(() => {
     setTheme(getFromLocalStorage());
     setDarkModeReady(true);
   }, []);
 
-  return [themeProps, theme, toggleTheme, darkModeReady];
+  return [theme, toggleTheme, darkModeReady];
 };
