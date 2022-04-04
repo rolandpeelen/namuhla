@@ -34,10 +34,15 @@ const ButtonGroupStyled = styled(ButtonGroup)`
 
 const View = ({ id, content, setEditing }) => {
   const handleKeyDown = (event) => event.keyCode === 13 && setEditing(true);
+
   React.useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    window.setTimeout(
+      () => document.addEventListener("keyup", handleKeyDown),
+      500
+    );
+    return () => document.removeEventListener("keyup", handleKeyDown);
   }, []);
+
   return (
     <Container onClick={(_) => setEditing(true)}>
       <ReactMarkdown
@@ -57,7 +62,6 @@ const Edit = ({ id, content, onUpdate, setEditing }) => {
 
   const editorDidMount = (editor, monaco) => {
     const vimMode = initVimMode(editor, document.getElementById("status"));
-    //defineThemes(monaco);
     editor.focus();
     setMonaco([editor, monaco]);
   };
@@ -72,7 +76,7 @@ const Edit = ({ id, content, onUpdate, setEditing }) => {
       <MonacoEditorStyled
         height="600"
         id="editor"
-        theme="vs-dark"
+        theme={theme.name === "dark" ? "vs-dark" : "vs"}
         language="markdown"
         value={localContent}
         options={{
