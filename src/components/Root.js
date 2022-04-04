@@ -11,6 +11,7 @@ import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { getTheme } from "../utils/theme.js";
 import { useDarkMode } from "../utils/useDarkMode.js";
 import { useAuth0 } from "@auth0/auth0-react";
+import { getToday } from "../utils/lib.js";
 import { authStates } from "../utils/types.js";
 import { useAccessToken } from "../hooks/useAccessToken";
 
@@ -38,6 +39,8 @@ const GlobalStyles = createGlobalStyle`
     justify-content: center;
     flex-direction: column;
     width: 100vw;
+    margin: 0;
+    padding: 0;
   }
 
   body {
@@ -47,20 +50,30 @@ const GlobalStyles = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: 'Noto Sans', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 2.0;
     display: flex;
     justify-items: center;
     justify-content: center;
     flex-direction: column;
     width: 100vw;
-    transition: all 0.3s ease-in-out;
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  *, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
   }
   `;
 
 const Root = () => {
   /* Data may contain error, or token, or be null when loading */
   const [state, data] = useAccessToken();
+  const [date, setDate] = React.useState(() => getToday());
   const [theme, toggleTheme, darkModeReady] = useDarkMode();
   const [client, setClient] = React.useState(null);
 
@@ -71,6 +84,7 @@ const Root = () => {
   }, [state, data]);
 
   if (!darkModeReady) return <div />;
+
   return (
     <ThemeProvider theme={getTheme(theme)}>
       <GlobalStyles />
@@ -78,8 +92,8 @@ const Root = () => {
       {state === authStates.UNAUTHORIZED && <Login />}
       {state === authStates.AUTHORIZED && client && (
         <ApolloProvider client={client}>
-          <Header toggleTheme={toggleTheme} logoutHandler={logout} />
-          <App />
+          <Header date={date} toggleTheme={toggleTheme} logoutHandler={logout} />
+          <App date={date} setDate={setDate} />
         </ApolloProvider>
       )}
     </ThemeProvider>

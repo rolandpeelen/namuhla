@@ -4,10 +4,19 @@ import CurrentDaily from "./CurrentDaily";
 import DatePicker from "./DatePicker";
 
 import queries from "../utils/queries.js";
-import { getToday, hasDailies } from "../utils/lib.js";
+import { hasDailies } from "../utils/lib.js";
+import styled from "styled-components";
 
-const App = () => {
-  const [date, setDate] = React.useState(() => getToday());
+const Container = styled.div`
+  height: 100%;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const App = ({ date, setDate }) => {
   const { loading, error, data } = useQuery(queries.GET_DAILIES);
   const [insertDailyMutation] = useMutation(queries.INSERT_DAILY);
 
@@ -30,13 +39,10 @@ const App = () => {
 
   if (hasDailies(data)) {
     return (
-      <>
-        <div>
-          <h4>{date}</h4>
-        </div>
+      <Container>
         <CurrentDaily date={date} data={data} />
         <DatePicker data={data} date={date} setDate={setDate} />
-      </>
+      </Container>
     );
   }
 

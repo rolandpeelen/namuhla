@@ -1,7 +1,7 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
-import { Button } from "react-bootstrap";
+import { Button } from "../Button.js";
 
 const Login = () => {
   console.dir(useAuth0());

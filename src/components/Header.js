@@ -1,24 +1,53 @@
 import React from "react";
-import { Navbar, Button } from "react-bootstrap";
+import { Button, ButtonGroup } from "./Button.js";
+import styled from "styled-components";
 
-const Header = ({ logoutHandler, toggleTheme }) => {
+const Container = styled.div`
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  color: ${({ theme }) => theme.text};
+  background-color: ${({ theme }) => theme.background};
+`;
+
+const Title = styled.h2`
+  margin: 0 0 0 1rem;
+  padding: 0;
+`;
+
+const Date = styled.h3`
+  margin: 0;
+  padding: 0;
+`;
+
+const Actions = styled.div`
+  margin: 0 0.35rem 0 0;
+  padding: 0;
+`;
+
+const Header = ({ date, logoutHandler, toggleTheme }) => {
   return (
-    <Navbar className="justify-content-between">
-      <Navbar.Brand>Namuhla</Navbar.Brand>
-      <Navbar.Collapse className="justify-content-end">
-        <Button
-          variant="primary"
-          className="btn-margin logoutBtn"
-          onClick={logoutHandler}
-        >
-          Log Out
-        </Button>
-      </Navbar.Collapse>
+    <Container>
+      <Title>Namuhla</Title>
 
-      <Button variant="secondary" type="button" onClick={toggleTheme}>
-        ☀
-      </Button>
-    </Navbar>
+      <Date>{date}</Date>
+
+      <Actions>
+        <ButtonGroup>
+          <Button type="button" onClick={toggleTheme}>
+            ☀
+          </Button>
+          <Button
+            className="btn-margin logoutBtn"
+            onClick={logoutHandler}
+          >
+            Log Out
+          </Button>
+        </ButtonGroup>
+      </Actions>
+    </Container>
   );
 };
 

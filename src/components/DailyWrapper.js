@@ -5,6 +5,13 @@ import { useMutation, useQuery } from "@apollo/client";
 import * as Daily from "./Daily";
 import { hasDailies, head } from "../utils/lib.js";
 import queries from "../utils/queries.js";
+import styled from "styled-components";
+
+const Container = styled.div`
+  height: 100%;
+  overflow: auto;
+  width: 60vw;
+`;
 
 const DailyWrapper = ({ id }) => {
   const [editing, setEditing] = React.useState(false);
@@ -30,7 +37,7 @@ const DailyWrapper = ({ id }) => {
   };
 
   switch (true) {
-    case loading || updating:
+    case loading:
       return "loading";
     case !!error: {
       console.log(error);
@@ -40,10 +47,23 @@ const DailyWrapper = ({ id }) => {
       const daily = head(data.dailies);
       /* Go straight to edit mode if empty */
       daily.content.length === 0 && editing === false && setEditing(true);
-      return editing ? (
-        <Daily.Edit {...daily} setEditing={setEditing} onUpdate={onUpdate} />
-      ) : (
-        <Daily.View {...daily} setEditing={setEditing} />
+      return (
+        <Container>
+                {updating && "updating"}
+          {editing ? (
+            <Daily.Edit
+              {...daily}
+              setEditing={setEditing}
+              onUpdate={onUpdate}
+            />
+          ) : (
+            <Daily.View
+              {...daily}
+              setEditing={setEditing}
+              onUpdate={onUpdate}
+            />
+          )}
+        </Container>
       );
     }
     default:
