@@ -108,8 +108,8 @@ const renderListItem =
         </Li>
       );
     }
-    return "-";
-    //return <li {...props} />;
+
+    return <li {...props} />;
   };
 
 const View = ({ id, content, onUpdate, setEditing }) => {
