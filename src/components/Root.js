@@ -1,7 +1,6 @@
 import React from "react";
 
 import App from "./App";
-import Header from "./Header";
 import Login from "../components/Auth/Login";
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
@@ -11,7 +10,6 @@ import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { getTheme } from "../utils/theme.js";
 import { useDarkMode } from "../utils/useDarkMode.js";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getToday } from "../utils/lib.js";
 import { authStates } from "../utils/types.js";
 import { useAccessToken } from "../hooks/useAccessToken";
 
@@ -74,7 +72,6 @@ const GlobalStyles = createGlobalStyle`
 const Root = () => {
   /* Data may contain error, or token, or be null when loading */
   const [state, data] = useAccessToken();
-  const [date, setDate] = React.useState(() => getToday());
   const [theme, toggleTheme, darkModeReady] = useDarkMode();
   const [client, setClient] = React.useState(null);
 
@@ -93,8 +90,7 @@ const Root = () => {
       {state === authStates.UNAUTHORIZED && <Login />}
       {state === authStates.AUTHORIZED && client && (
         <ApolloProvider client={client}>
-          <Header date={date} toggleTheme={toggleTheme} logoutHandler={logout} />
-          <App date={date} setDate={setDate} />
+          <App logoutHandler={logout} toggleTheme={toggleTheme} />
         </ApolloProvider>
       )}
     </ThemeProvider>

@@ -1,9 +1,11 @@
 import { useQuery, useMutation } from "@apollo/client";
 import React from "react";
 import CurrentDaily from "./CurrentDaily";
+import Header from "./Header";
 import DatePicker from "./DatePicker";
 
 import queries from "../utils/queries.js";
+import { getToday } from "../utils/lib.js";
 import { hasDailies } from "../utils/lib.js";
 import styled from "styled-components";
 
@@ -16,7 +18,8 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const App = ({ date, setDate }) => {
+const App = ({ logoutHandler, toggleTheme }) => {
+  const [date, setDate] = React.useState(() => getToday());
   const { loading, error, data } = useQuery(queries.GET_DAILIES);
   const [insertDailyMutation] = useMutation(queries.INSERT_DAILY);
 
@@ -40,6 +43,7 @@ const App = ({ date, setDate }) => {
   if (hasDailies(data)) {
     return (
       <Container>
+          <Header date={date} toggleTheme={toggleTheme} logoutHandler={logoutHandler} />
         <CurrentDaily date={date} data={data} />
         <DatePicker data={data} date={date} setDate={setDate} />
       </Container>
