@@ -7,6 +7,7 @@ import { getToday, hasDailies, getDailyByDate, head } from "../utils/lib.js";
 
 const CurrentDaily = ({ date, data }) => {
   const client = useApolloClient();
+  const creatingDaily = React.useRef(false);
   const currentDaily = React.useMemo(
     () => getDailyByDate(data.dailies, date),
     [date, data]
@@ -23,7 +24,11 @@ const CurrentDaily = ({ date, data }) => {
     });
 
   React.useEffect(() => {
-    if (date !== getToday() || !!currentDaily) return;
+    if (date !== getToday() || !!currentDaily || creatingDaily.current) return;
+
+    console.log("Creating");
+    creatingDaily.current = true;
+
     const dailies = data.dailies;
     const previousDaily = head(dailies);
 
@@ -32,17 +37,22 @@ const CurrentDaily = ({ date, data }) => {
         query: queries.GET_DAILY,
         variables: { id: previousDaily.id },
       })
-      .then(({ data }) =>
-        hasDailies(data)
-          ? head(data.dailies)
-              .content.split("\n")
-              .filter((x) => !x.includes("[x]"))
-              .join("\n")
-          : "# Welcome \n Here is your first daily! \n Click me to start editing..."
-      )
+      .then(({ data }) => {
+        if (!hasDailies)
+          return "# Welcome \n Here is your first daily! \n Click me to start editing...";
+
+        const daily = head(data.dailies)
+          .content.split("\n")
+          .filter((x) => !x.includes("[x]"))
+          .join("\n");
+
+        if (daily !== "") return daily;
+
+        return "# Welcome Back \n You ticked all the boxes yesterday. Well done :tada:! \n\n Here's a clean slate to start your day :sunglasses:";
+      })
       .then(insertDaily)
       .catch((e) => console.log(e));
-  }, [currentDaily, date, data, client]);
+  }, [client, date, data.dailies, currentDaily, creatingDaily]);
 
   if (!currentDaily) {
     if (getToday() === date) {

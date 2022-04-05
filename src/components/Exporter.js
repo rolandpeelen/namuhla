@@ -106,7 +106,7 @@ const Exporter = ({ date, dailies, toggleExport }) => {
     setCombined(
       `**${previousDaily.date}** \n ${previousReplaced} \n\n **${currentDaily.date}** \n ${currentReplaced}`
     );
-  }, [current.data, previous.data]);
+  }, [current.data, previous.data, doneEmoji, notDoneEmoji]);
 
   return (
     <Container>
