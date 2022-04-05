@@ -124,7 +124,7 @@ const View = ({ id, content, onUpdate, setEditing }) => {
   }, []);
 
   return (
-    <Container onClick={(_) => setEditing(true)}>
+    <Container id={id} onClick={(_) => setEditing(true)}>
       <ReactMarkdown
         contentEditable={true}
         rawSourcePos={true}

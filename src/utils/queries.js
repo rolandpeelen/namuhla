@@ -13,6 +13,17 @@ const GET_DAILY = gql`
   query getDailies($id: uuid!) {
     dailies(where: { id: { _eq: $id } }) {
       id
+      date
+      content
+    }
+  }
+`;
+
+const GET_PREVIOUS_DAILY = gql`
+  query getPreviousDaily($date: date!) {
+    dailies(where: { date: { _lt: $date } }, limit: 1) {
+      id
+      date
       content
     }
   }
@@ -44,5 +55,11 @@ const UPDATE_DAILY = gql`
   }
 `;
 
-const queries = { GET_DAILY, GET_DAILIES, INSERT_DAILY, UPDATE_DAILY };
+const queries = {
+  GET_DAILY,
+  GET_PREVIOUS_DAILY,
+  GET_DAILIES,
+  INSERT_DAILY,
+  UPDATE_DAILY,
+};
 export default queries;

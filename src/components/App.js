@@ -2,6 +2,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import React from "react";
 import CurrentDaily from "./CurrentDaily";
 import Header from "./Header";
+import Exporter from "./Exporter";
 import DatePicker from "./DatePicker";
 
 import queries from "../utils/queries.js";
@@ -20,6 +21,7 @@ const Container = styled.div`
 
 const App = ({ logoutHandler, toggleTheme }) => {
   const [date, setDate] = React.useState(() => getToday());
+  const [exporterActive, setExporterActive] = React.useState(false);
   const { loading, error, data } = useQuery(queries.GET_DAILIES);
   const [insertDailyMutation] = useMutation(queries.INSERT_DAILY);
 
@@ -35,6 +37,8 @@ const App = ({ logoutHandler, toggleTheme }) => {
     }
   }, [loading, data]);
 
+  const toggleExport = () => setExporterActive((x) => !x);
+
   if (!!error) {
     console.log(error);
     return "error";
@@ -46,10 +50,19 @@ const App = ({ logoutHandler, toggleTheme }) => {
         <Header
           date={date}
           toggleTheme={toggleTheme}
+          toggleExport={toggleExport}
           logoutHandler={logoutHandler}
         />
+        {/* TODO -> REFACTOR data -> dailies */}
         <CurrentDaily date={date} data={data} />
         <DatePicker data={data} date={date} setDate={setDate} />
+        {exporterActive && (
+          <Exporter
+            toggleExport={toggleExport}
+            date={date}
+            dailies={data.dailies}
+          />
+        )}
       </Container>
     );
   }

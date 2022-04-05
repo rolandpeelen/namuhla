@@ -33,10 +33,12 @@ const createApolloClient = (authToken) => {
 const GlobalStyles = createGlobalStyle`
   #root {
     display: flex;
-    justify-items: center;
-    justify-content: center;
+    justify-items: flex-start;
+    justify-content: flex-start;
+    align-item: flex-start;
     flex-direction: column;
     width: 100vw;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
   }

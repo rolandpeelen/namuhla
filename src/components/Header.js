@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, ButtonGroup } from "./Button.js";
+import { ThemeContext } from "styled-components";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -27,7 +28,8 @@ const Actions = styled.div`
   padding: 0;
 `;
 
-const Header = ({ date, logoutHandler, toggleTheme }) => {
+const Header = ({ date, logoutHandler, toggleTheme, toggleExport }) => {
+  const theme = React.useContext(ThemeContext);
   return (
     <Container>
       <Title>Namuhla</Title>
@@ -37,7 +39,10 @@ const Header = ({ date, logoutHandler, toggleTheme }) => {
       <Actions>
         <ButtonGroup transparent>
           <Button transparent type="button" onClick={toggleTheme}>
-            ☀
+          {theme.name === "dark" ? "Light" : "Dark"}
+          </Button>
+          <Button transparent type="button" onClick={toggleExport}>
+            Export
           </Button>
           <Button
             transparent
