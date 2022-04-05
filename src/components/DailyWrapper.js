@@ -49,7 +49,7 @@ const DailyWrapper = ({ id }) => {
       daily.content.length === 0 && editing === false && setEditing(true);
       return (
         <Container>
-                {updating && "updating"}
+          {updating && "updating"}
           {editing ? (
             <Daily.Edit
               {...daily}

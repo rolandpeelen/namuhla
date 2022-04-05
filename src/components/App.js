@@ -43,7 +43,11 @@ const App = ({ logoutHandler, toggleTheme }) => {
   if (hasDailies(data)) {
     return (
       <Container>
-          <Header date={date} toggleTheme={toggleTheme} logoutHandler={logoutHandler} />
+        <Header
+          date={date}
+          toggleTheme={toggleTheme}
+          logoutHandler={logoutHandler}
+        />
         <CurrentDaily date={date} data={data} />
         <DatePicker data={data} date={date} setDate={setDate} />
       </Container>

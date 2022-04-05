@@ -3,6 +3,7 @@ import { Button, ButtonGroup } from "./Button.js";
 import styled from "styled-components";
 
 const Container = styled.div`
+  width: 100vw;
   display: flex;
   align-content: center;
   align-items: center;
