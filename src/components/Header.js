@@ -8,8 +8,6 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 50px;
-  color: ${({ theme }) => theme.text};
-  background-color: ${({ theme }) => theme.background};
 `;
 
 const Title = styled.h2`
@@ -35,11 +33,12 @@ const Header = ({ date, logoutHandler, toggleTheme }) => {
       <Date>{date}</Date>
 
       <Actions>
-        <ButtonGroup>
-          <Button type="button" onClick={toggleTheme}>
+        <ButtonGroup transparent>
+          <Button transparent type="button" onClick={toggleTheme}>
             ☀
           </Button>
           <Button
+            transparent
             className="btn-margin logoutBtn"
             onClick={logoutHandler}
           >

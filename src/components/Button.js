@@ -13,17 +13,21 @@ const Button = styled.button`
   padding: 0 1rem;
   font-size: 1rem;
   margin: 0;
+  transition: all 0.3s ease-in-out;
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ invert, theme }) => (invert ? theme.inverseText : theme.text)};
-  background-color: ${({ invert, theme }) =>
-    invert ? theme.inverseBackground : theme.background};
+  background-color: ${({ transparent, invert, theme }) => {
+    if (transparent) return "transparent";
+    return invert ? theme.inverseBackground : theme.background;
+  }};
 
   &:hover {
     cursor: pointer;
     opacity: 0.9;
-    background-color: ${({ invert, theme }) =>
-      invert ? theme.inverseBackground : theme.background};
-  }
+    background-color: ${({ transparent, invert, theme }) => {
+      if (transparent) return "transparent";
+      return invert ? theme.inverseBackground : theme.background;
+    }}
 `;
 
 const ButtonGroup = styled.div`
@@ -38,13 +42,16 @@ const ButtonGroup = styled.div`
   padding: 0;
   margin: 0;
   border-radius: ${({ theme }) => theme.borderRadius};
-  background-color: ${({ invert, theme }) =>
-    invert ? theme.inverseBackground : theme.background};
+  background-color: ${({ transparent, invert, theme }) => {
+    if (transparent) return "transparent";
+    return invert ? theme.inverseBackground : theme.background;
+  }};
   ${Button} & {
     border-radius: 0;
-    background-color: ${({ invert, theme }) =>
-      invert ? theme.inverseBackground : theme.background};
-  }
+    background-color: ${({ transparent, invert, theme }) => {
+      if (transparent) return "transparent";
+      return invert ? theme.inverseBackground : theme.background;
+    }}
 `;
 
 export { ButtonGroup, Button };

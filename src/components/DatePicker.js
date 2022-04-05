@@ -9,12 +9,23 @@ const Container = styled.div`
   bottom: 2rem;
 `;
 
+const ButtonGroupStyled = styled(ButtonGroup)`
+  background-color: transparent;
+`;
+
 const DateElement = styled(Button)`
-  width: 3rem;
+  width: 2rem;
+  height: 2rem;
+  margin: 0.25rem;
+  transition: all 0.3s ease-in-out;
   ${({ hasDate, theme }) =>
     hasDate
       ? css`
           border: 1px solid ${theme.text};
+          &:hover {
+            background-color: ${theme.text};
+            color: ${theme.background};
+          }
         `
       : null}
 
@@ -36,7 +47,7 @@ const DatePicker = ({ data, date, setDate }) => {
 
   return (
     <Container>
-      <ButtonGroup>
+      <ButtonGroupStyled>
         {buildWeek(new Date(date)).map((x) => {
           const isoDate = x.toISOString().split("T")[0];
           return (
@@ -50,7 +61,7 @@ const DatePicker = ({ data, date, setDate }) => {
             </DateElement>
           );
         })}
-      </ButtonGroup>
+      </ButtonGroupStyled>
     </Container>
   );
 };
