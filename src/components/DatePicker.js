@@ -1,5 +1,5 @@
 import { ButtonGroup, Button } from "./Button.js";
-import { getDailyByDate, getToday, getDaysInMonth } from "../utils/lib.js";
+import { getDailyByDate } from "../utils/lib.js";
 import { buildWeek } from "../utils/dates.js";
 
 import styled, { css } from "styled-components";

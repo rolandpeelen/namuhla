@@ -39,7 +39,7 @@ const Header = ({ date, logoutHandler, toggleTheme, toggleExport }) => {
       <Actions>
         <ButtonGroup transparent>
           <Button transparent type="button" onClick={toggleTheme}>
-          {theme.name === "dark" ? "Light" : "Dark"}
+            {theme.name === "dark" ? "Light" : "Dark"}
           </Button>
           <Button transparent type="button" onClick={toggleExport}>
             Export

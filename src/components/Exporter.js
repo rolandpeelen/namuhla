@@ -3,11 +3,11 @@ import React from "react";
 import styled from "styled-components";
 import * as Daily from "./Daily";
 import { Button } from "./Button";
-import { hasDailies, head, getDailyByDate } from "../utils/lib.js";
+import { head, getDailyByDate } from "../utils/lib.js";
 import queries from "../utils/queries.js";
 
 const COMBINED_ID = "combined-boi";
-const COPY_EVENT = "copy-boi";
+const COPY_EVENT = "copy";
 
 const Container = styled.div`
   display: flex;
@@ -86,6 +86,7 @@ const Exporter = ({ date, dailies, toggleExport }) => {
       const copyText = document.getElementById(COMBINED_ID);
       e.clipboardData.setData("text/html", copyText.innerHTML);
       e.clipboardData.setData("text/plain", copyText.innerHTML);
+      console.log(copyText.innerHTML);
     };
     document.addEventListener(COPY_EVENT, copy);
     document.execCommand(COPY_EVENT);

@@ -1,7 +1,7 @@
 import React from "react";
 
 import App from "./App";
-import Login from "../components/Auth/Login";
+import Login from "./Auth/Login";
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
@@ -73,11 +73,16 @@ const GlobalStyles = createGlobalStyle`
 
 const Root = () => {
   /* Data may contain error, or token, or be null when loading */
-  const [state, data] = useAccessToken();
+  const { getAccessToken, state, data } = useAccessToken();
   const [theme, toggleTheme, darkModeReady] = useDarkMode();
   const [client, setClient] = React.useState(null);
 
   const { logout } = useAuth0();
+
+  const handleLogout = () => {
+    logout();
+    getAccessToken();
+  };
 
   React.useEffect(() => {
     state === authStates.AUTHORIZED && setClient(createApolloClient(data));
@@ -92,7 +97,7 @@ const Root = () => {
       {state === authStates.UNAUTHORIZED && <Login />}
       {state === authStates.AUTHORIZED && client && (
         <ApolloProvider client={client}>
-          <App logoutHandler={logout} toggleTheme={toggleTheme} />
+          <App logoutHandler={handleLogout} toggleTheme={toggleTheme} />
         </ApolloProvider>
       )}
     </ThemeProvider>

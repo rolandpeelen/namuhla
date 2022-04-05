@@ -21,6 +21,8 @@
     "react-router": "6.3.0",
     "react-router-dom": "6.3.0",
     "rehype-sanitize": "^5.0.1",
+    "rehype-stringify": "^9.0.3",
+    "remark-breaks": "^3.0.2",
     "remark-gemoji": "^7.0.1",
     "remark-gfm": "^3.0.1",
     "sass": "^1.49.11",

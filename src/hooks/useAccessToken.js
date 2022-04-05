@@ -7,24 +7,24 @@ function useAccessToken() {
   const [state, setState] = useState([authStates.LOADING, null]);
   const { user, getAccessTokenSilently } = useAuth0();
 
+  const getAccessToken = async () => {
+    const { audience, scope } = AUTH_CONFIG;
+
+    try {
+      const accessToken = await getAccessTokenSilently({
+        audience,
+        scope,
+      });
+      setState([authStates.AUTHORIZED, accessToken]);
+    } catch (error) {
+      setState([authStates.UNAUTHORIZED, error]);
+    }
+  };
+
   useEffect(() => {
-    const getAccessToken = async () => {
-      const { audience, scope } = AUTH_CONFIG;
-
-      try {
-        const accessToken = await getAccessTokenSilently({
-          audience,
-          scope,
-        });
-        setState([authStates.AUTHORIZED, accessToken]);
-      } catch (error) {
-        setState([authStates.UNAUTHORIZED, error]);
-      }
-    };
-
     getAccessToken();
   }, [getAccessTokenSilently, user?.sub]);
 
-  return state;
+  return { getAccessToken, state: state[0], data: state[1] };
 }
 export { useAccessToken };

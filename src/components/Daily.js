@@ -1,9 +1,10 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { ButtonGroup, Button } from "./Button.js";
-import { useDarkMode } from "../utils/useDarkMode.js";
-import { getTheme, defineThemes } from "../utils/theme.js";
+import { maybeCorrectSourcePosition } from "../utils/markdown.js";
 import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
+import rehypeStringify from "rehype-stringify";
 import styled from "styled-components";
 import { ThemeContext } from "styled-components";
 import remarkGemoji from "remark-gemoji";
@@ -17,6 +18,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-self: center;
+  & a {
+    opacity: 0.5 !important;
+    color: ${({ theme }) => theme.text};
+  }
 `;
 
 const MonacoEditorStyled = styled(MonacoEditor)`
@@ -33,6 +38,12 @@ const ButtonGroupStyled = styled(ButtonGroup)`
   margin-bottom: 25px !important;
 `;
 
+const ListItem = styled.li`
+  & input[type="checkbox"] {
+    margin-right: 5px;
+  }
+`;
+
 const replace = {
   true: "[x]",
   false: "[ ]",
@@ -42,7 +53,10 @@ const Checkbox = ({ sourcePosition, content, onUpdate, checked }) => {
   const handleChange = (e) => {
     const lineNo = sourcePosition.start.line - 1;
     const lines = content.split("\n");
-    const newLine = lines[sourcePosition.start.line - 1].replace(
+
+    /* We use the checked value, cast to a string, for the lookup, this will
+     * automatically toggle */
+    const newLine = lines[lineNo].replace(
       replace[String(checked)],
       replace[String(!checked)]
     );
@@ -64,52 +78,51 @@ const Checkbox = ({ sourcePosition, content, onUpdate, checked }) => {
   );
 };
 
-const Li = styled.li`
-  text-decoration: ${({ checked }) => (checked ? "line-through" : "none")};
-  & input[type="checkbox"]:disabled {
-    display: none;
+const render = (content, onUpdate, sourcePosition) => (node, i, arr) => {
+  if (node.type === "text") return node.value;
+  if (node.tagName === "p") {
+    return Array.isArray(node.children)
+      ? node.children.map(render(content, onUpdate, sourcePosition))
+      : [];
   }
-  & input[type="checkbox"] {
-    margin-right: 5px;
+  if (node.tagName === "input" && node.properties.type === "checkbox") {
+    /* Hacky-hacky-hacky Reason for this hackyness, is that we remove some
+     * whitespace, and sometimes the actual sourceposition in the parser get's
+     * rekt. The `maybeCorrectSourcePosition` checks wether the line after,
+     * or before it matches incase the original doesn't... */
+    const reconstructedLine = `- ${replace[node.properties.checked]}${arr
+      .map((x) => x.value || "")
+      .join("")}`;
+
+    return (
+      <Checkbox
+        sourcePosition={maybeCorrectSourcePosition(
+          reconstructedLine,
+          sourcePosition,
+          content
+        )}
+        onUpdate={onUpdate}
+        checked={node.properties.checked}
+        content={content}
+      />
+    );
   }
-`;
 
-const filterCheckboxes = (elements) => {
-  if (!Array.isArray(elements)) return elements;
-  return elements.map((element) => {
-    console.log(element);
+  const children = Array.isArray(node.children)
+    ? node.children.map(render(content, onUpdate, sourcePosition))
+    : [];
 
-    if (!element.props) return element;
-    if (element.props.type === "checkbox") return undefined;
-    if (element.props.children && element.props.children.length > 0)
-      return element.props.children.map(filterCheckboxes);
-  });
+  return React.createElement(node.tagName, node.properties, children);
 };
-
-const hasNestedChildren = (children) =>
-  Array.isArray(children) &&
-  children.some(
-    (x) => x.props && x.props.children && x.props.children.length > 0
-  );
 
 const renderListItem =
   (content, onUpdate) =>
   ({ node, sourcePosition, ordered, ...props }) => {
-    if (props.className === "task-list-item") {
-      return (
-        <Li checked={props.checked}>
-          <Checkbox
-            sourcePosition={sourcePosition}
-            onUpdate={onUpdate}
-            checked={props.checked}
-            content={content}
-          />
-          {props.children}
-        </Li>
-      );
-    }
-
-    return <li {...props} />;
+    return (
+      <ListItem>
+        {node.children.map(render(content, onUpdate, sourcePosition))}
+      </ListItem>
+    );
   };
 
 const View = ({ id, content, onUpdate, setEditing }) => {
@@ -130,8 +143,8 @@ const View = ({ id, content, onUpdate, setEditing }) => {
         rawSourcePos={true}
         components={{ li: renderListItem(content, onUpdate) }}
         children={content}
-        remarkPlugins={[remarkGfm, remarkGemoji]}
-        rehypePlugins={[rehypeSanitize]}
+        remarkPlugins={[remarkBreaks, remarkGfm, remarkGemoji]}
+        rehypePlugins={[rehypeStringify, rehypeSanitize]}
       />
     </Container>
   );
