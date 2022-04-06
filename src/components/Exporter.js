@@ -57,18 +57,19 @@ const replace = {
   unchecked: "[ ]",
 };
 
-const replaceEmojis = (doneEmoji, notDoneEmoji) => (xs) =>
+const replaceEmojis = (checkedEmoji, notCheckedEmoji, xs) =>
   xs
     .split("\n")
     .map((x) =>
       x
-        .replace(replace.checked, doneEmoji)
-        .replace(replace.unchecked, notDoneEmoji)
+        .replace(replace.checked, checkedEmoji)
+        .replace(replace.unchecked, notCheckedEmoji)
     )
     .join("\n");
 
 const Exporter = ({ date, dailies, toggleExport }) => {
   const [doneEmoji, setDoneEmoji] = React.useState(":white_check_mark: -");
+  const [todoEmoji, setTodoEmoji] = React.useState(":construction_sign: -");
   const [notDoneEmoji, setNotDoneEmoji] = React.useState(":x: -");
   const [combined, setCombined] = React.useState("");
 
@@ -97,17 +98,16 @@ const Exporter = ({ date, dailies, toggleExport }) => {
   React.useEffect(() => {
     if (!current.data || !previous.data) return;
 
-    const replaceEmojisP = replaceEmojis(doneEmoji, notDoneEmoji);
     const previousDaily = head(previous.data.dailies);
-    const previousReplaced = replaceEmojisP(previousDaily.content);
+    const previousReplaced = replaceEmojis(doneEmoji, notDoneEmoji, previousDaily.content);
 
     const currentDaily = head(current.data.dailies);
-    const currentReplaced = replaceEmojisP(currentDaily.content);
+    const currentReplaced = replaceEmojis(doneEmoji, todoEmoji, currentDaily.content);
 
     setCombined(
       `**${previousDaily.date}** \n ${previousReplaced} \n\n **${currentDaily.date}** \n ${currentReplaced}`
     );
-  }, [current.data, previous.data, doneEmoji, notDoneEmoji]);
+  }, [current.data, previous.data, doneEmoji, todoEmoji, notDoneEmoji]);
 
   return (
     <Container>
@@ -129,6 +129,10 @@ const Exporter = ({ date, dailies, toggleExport }) => {
           <input
             defaultValue={doneEmoji}
             onBlur={(e) => setDoneEmoji(e.target.value)}
+          />
+          <input
+            defaultValue={todoEmoji}
+            onBlur={(e) => setTodoEmoji(e.target.value)}
           />
           <input
             defaultValue={notDoneEmoji}
