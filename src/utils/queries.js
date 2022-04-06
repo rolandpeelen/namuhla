@@ -21,7 +21,7 @@ const GET_DAILY = gql`
 
 const GET_PREVIOUS_DAILY = gql`
   query getPreviousDaily($date: date!) {
-    dailies(where: { date: { _lt: $date } }, limit: 1) {
+    dailies(order_by: {date: desc}, where: { date: { _lt: $date } }, limit: 1) {
       id
       date
       content

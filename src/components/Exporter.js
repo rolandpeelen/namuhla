@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import * as Daily from "./Daily";
 import { Button } from "./Button";
-import { head, getDailyByDate } from "../utils/lib.js";
+import { head, getToday, getDailyByDate } from "../utils/lib.js";
 import queries from "../utils/queries.js";
 
 const COMBINED_ID = "combined-boi";
@@ -69,7 +69,7 @@ const replaceEmojis = (checkedEmoji, notCheckedEmoji, xs) =>
 
 const Exporter = ({ date, dailies, toggleExport }) => {
   const [doneEmoji, setDoneEmoji] = React.useState(":white_check_mark: -");
-  const [todoEmoji, setTodoEmoji] = React.useState(":construction_sign: -");
+  const [todoEmoji, setTodoEmoji] = React.useState(":construction: -");
   const [notDoneEmoji, setNotDoneEmoji] = React.useState(":x: -");
   const [combined, setCombined] = React.useState("");
 
@@ -87,7 +87,6 @@ const Exporter = ({ date, dailies, toggleExport }) => {
       const copyText = document.getElementById(COMBINED_ID);
       e.clipboardData.setData("text/html", copyText.innerHTML);
       e.clipboardData.setData("text/plain", copyText.innerHTML);
-      console.log(copyText.innerHTML);
     };
     document.addEventListener(COPY_EVENT, copy);
     document.execCommand(COPY_EVENT);
@@ -105,7 +104,7 @@ const Exporter = ({ date, dailies, toggleExport }) => {
     const currentReplaced = replaceEmojis(doneEmoji, todoEmoji, currentDaily.content);
 
     setCombined(
-      `**${previousDaily.date}** \n ${previousReplaced} \n\n **${currentDaily.date}** \n ${currentReplaced}`
+            `**${previousDaily.date}** \n\n ${previousReplaced}   \n\n\n **${date === getToday() ? "Today" : currentDaily.date}** \n ${currentReplaced}`
     );
   }, [current.data, previous.data, doneEmoji, todoEmoji, notDoneEmoji]);
 
