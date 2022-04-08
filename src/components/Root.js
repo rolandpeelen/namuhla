@@ -45,6 +45,7 @@ const GlobalStyles = createGlobalStyle`
 
   body {
     background: ${({ theme }) => theme.background};
+    background-image: ${({ theme }) => `radial-gradient(farthest-corner at 50vw 100vh, ${theme.backgroundD1} 0%, ${theme.background} 50%)`} ;
     color: ${({ theme }) => theme.text};
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
@@ -74,7 +75,7 @@ const GlobalStyles = createGlobalStyle`
 const Root = () => {
   /* Data may contain error, or token, or be null when loading */
   const { getAccessToken, state, data } = useAccessToken();
-  const [theme, toggleTheme, darkModeReady] = useDarkMode();
+  const [theme, setTheme, darkModeReady] = useDarkMode();
   const [client, setClient] = React.useState(null);
 
   const { logout } = useAuth0();
@@ -97,7 +98,7 @@ const Root = () => {
       {state === authStates.UNAUTHORIZED && <Login />}
       {state === authStates.AUTHORIZED && client && (
         <ApolloProvider client={client}>
-          <App logoutHandler={handleLogout} toggleTheme={toggleTheme} />
+          <App logoutHandler={handleLogout} setTheme={setTheme} />
         </ApolloProvider>
       )}
     </ThemeProvider>

@@ -3,7 +3,7 @@ import React from "react";
 import CurrentDaily from "./CurrentDaily";
 import Header from "./Header";
 import Exporter from "./Exporter";
-import DatePicker from "./DatePicker";
+import Toolbar from "./Toolbar";
 
 import queries from "../utils/queries.js";
 import { getToday } from "../utils/lib.js";
@@ -19,7 +19,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const App = ({ logoutHandler, toggleTheme }) => {
+const App = ({ logoutHandler, setTheme }) => {
   const [date, setDate] = React.useState(() => getToday());
   const [exporterActive, setExporterActive] = React.useState(false);
   const { loading, error, data } = useQuery(queries.GET_DAILIES);
@@ -37,8 +37,6 @@ const App = ({ logoutHandler, toggleTheme }) => {
     }
   }, [loading, data]);
 
-  const toggleExport = () => setExporterActive((x) => !x);
-
   if (!!error) {
     console.log(error);
     return "error";
@@ -49,16 +47,17 @@ const App = ({ logoutHandler, toggleTheme }) => {
       <Container>
         <Header
           date={date}
-          toggleTheme={toggleTheme}
-          toggleExport={toggleExport}
           logoutHandler={logoutHandler}
         />
         {/* TODO -> REFACTOR data -> dailies */}
         <CurrentDaily date={date} data={data} />
-        <DatePicker data={data} date={date} setDate={setDate} />
+        <Toolbar
+          setTheme={setTheme}
+          openExport={() => setExporterActive(true)}
+          data={data} date={date} setDate={setDate} />
         {exporterActive && (
           <Exporter
-            toggleExport={toggleExport}
+            closeExport={() => setExporterActive(false)}
             date={date}
             dailies={data.dailies}
           />

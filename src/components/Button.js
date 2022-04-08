@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import chroma from "chroma-js";
+import styled, { css } from "styled-components";
 
 const Button = styled.button`
   display: inline-flex;
@@ -15,19 +16,31 @@ const Button = styled.button`
   margin: 0;
   transition: all 0.3s ease-in-out;
   border-radius: ${({ theme }) => theme.borderRadius};
-  color: ${({ invert, theme }) => (invert ? theme.inverseText : theme.text)};
-  background-color: ${({ transparent, invert, theme }) => {
-    if (transparent) return "transparent";
-    return invert ? theme.inverseBackground : theme.background;
-  }};
+  color: ${({ theme }) => theme.text};
+  background-color: ${({ transparent, theme }) =>
+    transparent ? "transparent" : theme.background
+  };
+  ${({ iconLeft }) =>
+    iconLeft &&
+    css`
+      svg {
+        margin-right: 0.5rem;
+      }
+    `};
+
+  ${({ iconRight }) =>
+    iconRight &&
+    css`
+      svg {
+        margin-left: 0.5rem;
+      }
+    `};
 
   &:hover {
     cursor: pointer;
     opacity: 0.9;
-    background-color: ${({ transparent, invert, theme }) => {
-      if (transparent) return "transparent";
-      return invert ? theme.inverseBackground : theme.background;
-    }}
+    box-shadow: 0px 0px 2px 0px ${({ theme }) => chroma(theme.backgroundL2)};
+    background-color: ${({ theme }) => chroma(theme.backgroundL2)};
 `;
 
 const ButtonGroup = styled.div`
@@ -42,16 +55,16 @@ const ButtonGroup = styled.div`
   padding: 0;
   margin: 0;
   border-radius: ${({ theme }) => theme.borderRadius};
-  background-color: ${({ transparent, invert, theme }) => {
+  background-color: ${({ transparent, theme }) => {
     if (transparent) return "transparent";
-    return invert ? theme.inverseBackground : theme.background;
+    return theme.background;
   }};
   ${Button} & {
     border-radius: 0;
-    background-color: ${({ transparent, invert, theme }) => {
-      if (transparent) return "transparent";
-      return invert ? theme.inverseBackground : theme.background;
-    }}
+    background-color: ${({ transparent, theme }) => {
+    if (transparent) return "transparent";
+    return theme.background;
+  }}
 `;
 
 export { ButtonGroup, Button };

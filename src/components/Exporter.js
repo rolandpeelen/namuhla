@@ -67,7 +67,7 @@ const replaceEmojis = (checkedEmoji, notCheckedEmoji, xs) =>
     )
     .join("\n");
 
-const Exporter = ({ date, dailies, toggleExport }) => {
+const Exporter = ({ date, dailies, closeExport }) => {
   const [doneEmoji, setDoneEmoji] = React.useState(":white_check_mark: -");
   const [todoEmoji, setTodoEmoji] = React.useState(":construction: -");
   const [notDoneEmoji, setNotDoneEmoji] = React.useState(":x: -");
@@ -104,7 +104,7 @@ const Exporter = ({ date, dailies, toggleExport }) => {
     const currentReplaced = replaceEmojis(doneEmoji, todoEmoji, currentDaily.content);
 
     setCombined(
-            `**${previousDaily.date}** \n\n ${previousReplaced}   \n\n\n **${date === getToday() ? "Today" : currentDaily.date}** \n ${currentReplaced}`
+            `**${previousDaily.date}** \n\n ${previousReplaced}   \n\n\n ------ \n **${date === getToday() ? "Today" : currentDaily.date}** \n\n ${currentReplaced}`
     );
   }, [current.data, previous.data, doneEmoji, todoEmoji, notDoneEmoji]);
 
@@ -142,7 +142,7 @@ const Exporter = ({ date, dailies, toggleExport }) => {
           </Button>
         </Footer>
       </Modal>
-      <ModalCover onClick={toggleExport} />
+      <ModalCover onClick={closeExport} />
     </Container>
   );
 };

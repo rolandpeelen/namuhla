@@ -30,7 +30,7 @@ const DailyWrapper = ({ id }) => {
         content,
         dateUpdated: new Date().toISOString(),
       },
-    }).then((content) => {
+    }).then((_content) => {
       setUpdating(false);
       setEditing(false);
     });

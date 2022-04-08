@@ -18,7 +18,7 @@ const buildWeek = (date) => {
     const previousMonth = getDaysInMonth(
       new Date(date.setMonth(date.getMonth() - 1))
     );
-    return new Array(WIDTH).fill(0).map((x, i) => {
+    return new Array(WIDTH).fill(0).map((_x, i) => {
       const day = i - center + middle;
 
       return day > 0
@@ -26,7 +26,7 @@ const buildWeek = (date) => {
         : new Date(year, month - 1, previousMonth + day, 12);
     });
   } else if (toRight < center + 1) {
-    return new Array(WIDTH).fill(0).map((x, i) => {
+    return new Array(WIDTH).fill(0).map((_x, i) => {
       const day = i - center;
       return middle + day <= daysInMonth
         ? new Date(year, month, middle + day, 12)
@@ -35,7 +35,7 @@ const buildWeek = (date) => {
   } else {
     return new Array(WIDTH)
       .fill(0)
-      .map((x, i) => new Date(year, month, middle + i - center, 12));
+      .map((_x, i) => new Date(year, month, middle + i - center, 12));
   }
 };
 

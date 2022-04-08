@@ -1,62 +1,60 @@
+import chroma from "chroma-js";
+
 const THEME_KEY_LOCALSTORAGE = "THEME_KEY_LOCALSTORAGE";
+
+const kinds = {
+  LIGHT: "light",
+  DARK: "dark",
+};
 
 const themes = {
   LIGHT: "light",
   DARK: "dark",
 };
 
+const base = {
+  borderRadius: "5px",
+  sun: "#fff474",
+  moon: "#3c3b5f",
+}
+
 const light = {
+  ...base,
   name: themes.LIGHT,
+  kind: themes.LIGHT,
+  accent: "#66d1b6",
   background: "#e9eaf0",
-  backgroundHover: "#e9eaf0",
-  inverseBackground: "#25283a",
   text: "#111424",
-  inverseText: "#a9b1d3",
-  borderRadius: "5px",
 };
+
 const dark = {
+  ...base,
   name: themes.DARK,
-  background: "#25283a",
-  inverseBackground: "#e9eaf0",
-  text: "#a9b1d3",
-  inverseText: "#111424",
-  borderRadius: "5px",
+  kind: themes.DARK,
+  accent: "#66d1b6",
+  background: "#292D3E",
+  text: "#EEEFF1",
 };
+
+const derive = (base) => ({
+  ...base,
+  backgroundL1: chroma(base.background).brighten(0.1).hex(),
+  backgroundL2: chroma(base.background).brighten(0.25).hex(),
+  backgroundL3: chroma(base.background).brighten(0.5).hex(),
+  backgroundD1: chroma(base.background).darken(0.1).hex(),
+  backgroundD2: chroma(base.background).darken(0.25).hex(),
+  backgroundD3: chroma(base.background).darken(0.5).hex(),
+})
 
 const getTheme = (theme) => {
   switch (theme) {
     case themes.LIGHT:
-      return light;
+      return derive(light);
     case themes.DARK:
-      return dark;
+      return derive(dark);
     default:
       return light;
   }
 };
 
-const defineDarkTheme = (monaco) => {
-  monaco.editor.defineTheme("dark", {
-    base: "vs-dark",
-    inherit: true,
-    rules: [],
-    colors: {
-      "editor.background": dark.background,
-    },
-  });
-};
-
-const defineLightTheme = (monaco) => {
-  monaco.editor.defineTheme("light", {
-    base: "vs",
-    inherit: true,
-    rules: [],
-    colors: {
-      "editor.background": light.background,
-    },
-  });
-};
-
-const defineThemes = (monaco) =>
-  defineLightTheme(monaco) && defineDarkTheme(monaco);
-
-export { THEME_KEY_LOCALSTORAGE, themes, getTheme, defineThemes };
+export { THEME_KEY_LOCALSTORAGE, themes, kinds, getTheme };

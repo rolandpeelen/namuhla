@@ -11,16 +11,16 @@ export const useDarkMode = () => {
   const [theme, setTheme] = React.useState(themes.LIGHT);
   const [darkModeReady, setDarkModeReady] = React.useState(false);
 
-  const toggleTheme = React.useCallback(() => {
-    const newTheme = theme === themes.LIGHT ? themes.DARK : themes.LIGHT;
+  const handleSetTheme = React.useCallback((newTheme) => {
     localStorage.setItem(THEME_KEY_LOCALSTORAGE, newTheme);
     setTheme(newTheme);
   }, [theme, setTheme]);
+
 
   React.useEffect(() => {
     setTheme(getFromLocalStorage());
     setDarkModeReady(true);
   }, []);
 
-  return [theme, toggleTheme, darkModeReady];
+  return [theme, handleSetTheme, darkModeReady];
 };
