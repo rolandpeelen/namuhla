@@ -6,6 +6,7 @@ import styled from "styled-components";
 const DatePickerContainer = styled.div`
   padding: 0.5rem 0.6rem;
   border-radius: ${({ theme }) => theme.borderRadius};
+  background-color: ${({ theme }) => theme.backgroundD1};
   transition: all 0.3s 0.1s ease-in-out;
 `;
 const ToolbarActionsContainer = styled.div`
