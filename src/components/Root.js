@@ -60,7 +60,7 @@ const GlobalStyles = createGlobalStyle`
     width: 100vw;
     margin: 0;
     padding: 0;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-out;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
