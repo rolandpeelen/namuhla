@@ -16,10 +16,10 @@ const Button = styled.button`
   margin: 0;
   transition: all 0.3s ease-in-out;
   border-radius: ${({ theme }) => theme.borderRadius};
-  color: ${({ theme }) => theme.text};
-  background-color: ${({ transparent, theme }) =>
-    transparent ? "transparent" : theme.background
-  };
+  color: ${({ primary, theme }) =>
+    primary ? chroma(theme.accent).darken(2.0).hex() : theme.text};
+  background-color: ${({ primary, transparent, theme }) =>
+    primary ? theme.accent : transparent ? "transparent" : theme.background};
   ${({ iconLeft }) =>
     iconLeft &&
     css`
@@ -39,8 +39,10 @@ const Button = styled.button`
   &:hover {
     cursor: pointer;
     opacity: 0.9;
-    box-shadow: 0px 0px 2px 0px ${({ theme }) => chroma(theme.backgroundL2)};
-    background-color: ${({ theme }) => chroma(theme.backgroundL2)};
+    box-shadow: 0px 0px 2px 0px ${({ theme, primary }) =>
+      primary ? chroma(theme.accent).brighten(0.5).hex() : theme.backgroundL2};
+    background-color: ${({ theme, primary }) =>
+      primary ? chroma(theme.accent).brighten(0.5).hex() : theme.backgroundL2};
 `;
 
 const ButtonGroup = styled.div`
@@ -62,9 +64,9 @@ const ButtonGroup = styled.div`
   ${Button} & {
     border-radius: 0;
     background-color: ${({ transparent, theme }) => {
-    if (transparent) return "transparent";
-    return theme.background;
-  }}
+      if (transparent) return "transparent";
+      return theme.background;
+    }}
 `;
 
 export { ButtonGroup, Button };

@@ -44,8 +44,12 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
+    min-height: 100vh;
+    overflow-y: auto;
+          padding-bottom: 10rem;
     background: ${({ theme }) => theme.background};
-    background-image: ${({ theme }) => `radial-gradient(farthest-corner at 50vw 100vh, ${theme.backgroundD1} 0%, ${theme.background} 50%)`} ;
+    background-image: ${({ theme }) =>
+      `radial-gradient(farthest-corner at 50vw 100vh, ${theme.backgroundD1} 0%, ${theme.background} 50%)`} ;
     color: ${({ theme }) => theme.text};
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
@@ -64,6 +68,12 @@ const GlobalStyles = createGlobalStyle`
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+  }
+
+  code { font-family: 'Fira Code', monospace; }
+
+  @supports (font-variation-settings: normal) {
+    code { font-family: 'Fira Code VF', monospace; }
   }
   *, *:before, *:after {
     -webkit-box-sizing: inherit;
