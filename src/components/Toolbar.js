@@ -7,20 +7,20 @@ const DatePickerContainer = styled.div`
   padding: 0.5rem 0.6rem;
   border-radius: ${({ theme }) => theme.borderRadius};
   background-color: ${({ theme }) => theme.backgroundD1};
-  transition: all 0.3s 0.1s ease-in-out;
+  transition: all 0.2s 0.1s ease-in-out;
 `;
 const ToolbarActionsContainer = styled.div`
   padding: 0.25rem 0.6rem 0.6rem;
   transform: translateY(-5px);
   opacity: 0;
-  transition: all 0.3s 0.2s ease-out;
+  transition: all 0.2s 0.1s ease-out;
 `;
 
 const Container = styled.div`
   position: fixed;
   bottom: 2rem;
   padding: 0.5rem 0.6rem 0.6rem;
-  transition: all 0.3s 0.2s ease-in-out;
+  transition: all 0.2s 0.1s ease-in-out;
   border-radius: ${({ theme }) => theme.borderRadius};
   &:hover {
     background-color: ${({ theme }) => theme.backgroundL1};
