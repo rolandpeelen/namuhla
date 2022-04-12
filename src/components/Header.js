@@ -9,6 +9,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 50px;
+  position: fixed;
+  top: 0;
 `;
 
 const Title = styled.h2`

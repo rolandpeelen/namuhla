@@ -1,5 +1,6 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { ButtonGroup, Button } from "./Button.js";
 import { maybeCorrectSourcePosition } from "../utils/markdown.js";
 import remarkGfm from "remark-gfm";
@@ -8,34 +9,43 @@ import rehypeStringify from "rehype-stringify";
 import styled from "styled-components";
 import { ThemeContext } from "styled-components";
 import remarkGemoji from "remark-gemoji";
-import rehypeSanitize from "rehype-sanitize";
 import MonacoEditor from "react-monaco-editor";
-import { initVimMode } from "monaco-vim";
-import { VimMode } from "monaco-vim";
+import { VimMode, initVimMode } from "monaco-vim";
+import { editor, markdown } from "../utils/editor-theme.js";
+import { atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs'
+
+
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-self: center;
+  align-self: start;
+  padding-top: 50px;
+  padding-bottom: 10rem;
   & a {
     opacity: 0.5 !important;
-    color: ${({ theme }) => theme.text};
+    color: ${({ theme }) => theme.accent};
   }
 `;
 
 const MonacoEditorStyled = styled(MonacoEditor)`
+  margin-top: 50px;
   width: 100% !important;
   height: 100% !important;
   display: flex;
   margin-bottom: 25px;
-  line-height: 2;
-  color: ${({ theme }) => theme.text};
-  background-color: ${({ theme }) => theme.background};
+  line-height: 2.0;
+  overflow: hidden;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `;
 
 const ButtonGroupStyled = styled(ButtonGroup)`
+  background-color: transparent;
   margin-bottom: 25px !important;
+  ${Button} {
+      margin: 0 0.25rem;
+  }
 `;
 
 const ListItem = styled.li`
@@ -50,7 +60,7 @@ const replace = {
 };
 
 const Checkbox = ({ sourcePosition, content, onUpdate, checked }) => {
-  const handleChange = (e) => {
+  const handleChange = (_e) => {
     const lineNo = sourcePosition.start.line - 1;
     const lines = content.split("\n");
 
@@ -117,16 +127,21 @@ const render = (content, onUpdate, sourcePosition) => (node, i, arr) => {
 
 const renderListItem =
   (content, onUpdate) =>
-  ({ node, sourcePosition, ordered, ...props }) => {
-    return (
-      <ListItem>
-        {node.children.map(render(content, onUpdate, sourcePosition))}
-      </ListItem>
-    );
-  };
+    ({ node, sourcePosition, ordered, ...props }) => {
+      return (
+        <ListItem>
+          {node.children.map(render(content, onUpdate, sourcePosition))}
+        </ListItem>
+      );
+    };
+
+const StyledSyntaxHighlighter = styled(SyntaxHighlighter)`
+  border-radius: ${({ theme }) => theme.borderRadius};
+`;
 
 const View = ({ id, content, onUpdate, setEditing }) => {
   const handleKeyDown = (event) => event.keyCode === 13 && setEditing(true);
+  const theme = React.useContext(ThemeContext);
 
   React.useEffect(() => {
     window.setTimeout(
@@ -141,28 +156,90 @@ const View = ({ id, content, onUpdate, setEditing }) => {
       <ReactMarkdown
         contentEditable={true}
         rawSourcePos={true}
-        components={{ li: renderListItem(content, onUpdate) }}
+        components={{
+          li: renderListItem(content, onUpdate),
+          code({ node, inline, className, sourcePosition, children, ...props }) {
+            const match = /language-(\w+)/.exec(className || '')
+            return !inline && match ? (
+              <StyledSyntaxHighlighter
+                children={String(children).replace(/\n$/, '')}
+                style={theme.kind === "dark" ? markdown : atomOneLight}
+                showLineNumbers={true}
+                language={match[1]}
+                PreTag="div"
+                {...props}
+              />
+            ) : (
+              <code className={className} {...props}>
+                {children}
+              </code>
+            )
+          }
+        }}
         children={content}
         remarkPlugins={[remarkBreaks, remarkGfm, remarkGemoji]}
-        rehypePlugins={[rehypeStringify, rehypeSanitize]}
+        rehypePlugins={[rehypeStringify]}
       />
     </Container>
   );
 };
 
-const Edit = ({ id, content, onUpdate, setEditing }) => {
+const Status = styled.div`
+  margin: 0.5rem 0;
+  span {
+    font-family: monospace;
+    font-size: 16px;
+    color: ${({ theme }) => theme.text};
+  }
+  /* Status 01, Status 02 */
+  & span:nth-of-type(1),
+  & span:nth-of-type(5) {
+    opacity: 0.5;
+  }
+  input {
+    font-size: 16px;
+    padding: 0.25rem;
+    font-family: monospace;
+    color: ${({ theme }) => theme.text};
+    background: ${({ theme }) => theme.backgroundL1};
+    border-radius: ${({ theme }) => theme.borderRadius};
+    border: 2px solid transparent;
+    outline: none !important;
+
+    &:focus {
+      border-color: ${({ theme }) => theme.backgroundL2};
+    }
+  }
+`;
+
+const Edit = ({ content, onUpdate, setEditing }) => {
   const [localContent, setLocalContent] = React.useState(content);
   const [monaco, setMonaco] = React.useState(null);
   const theme = React.useContext(ThemeContext);
 
   const editorDidMount = (editor, monaco) => {
-    const vimMode = initVimMode(editor, document.getElementById("status"));
+    initVimMode(editor, document.getElementById("status"));
     editor.focus();
     setMonaco({ editor, monaco });
   };
 
+  const editorWillMount = (monaco) => {
+
+    monaco.editor.defineTheme("tokyo-night", {
+      base: "vs-dark", // can also be vs-dark or hc-black
+      inherit: true, // can also be false to completely replace the builtin rules
+      rules: [],
+      fontLigatures: true,
+      ...editor
+    });
+  };
+
   React.useEffect(() => {
+    VimMode.Vim.defineEx("wqa", "wqa", () =>
+      onUpdate(monaco.editor.getValue())
+    );
     VimMode.Vim.defineEx("wq", "wq", () => onUpdate(monaco.editor.getValue()));
+    VimMode.Vim.defineEx("qa", "qa", () => setEditing(false));
     VimMode.Vim.defineEx("q", "q", () => setEditing(false));
   }, [monaco]);
 
@@ -170,28 +247,30 @@ const Edit = ({ id, content, onUpdate, setEditing }) => {
     <>
       <MonacoEditorStyled
         id="editor"
-        height={500}
-        theme={theme.name === "dark" ? "vs-dark" : "vs"}
+        height={600}
+        theme={theme.kind === "dark" ? "tokyo-night" : "vs"}
         language="markdown"
         value={localContent}
         options={{
           minimap: {
             enabled: false,
           },
-          lineHeight: 2,
+          lineHeight: 2.2,
           fontSize: 16,
+          fontLigatures: true,
           lineNumbers: "relative",
           wordWrap: "on",
         }}
-        onChange={(newValue, e) => setLocalContent(newValue)}
+        onChange={(newValue, _e) => setLocalContent(newValue)}
+        editorWillMount={editorWillMount}
         editorDidMount={editorDidMount}
       />
-      <div id="status" />
+      <Status id="status" />
       <ButtonGroupStyled>
-        <Button variant="secondary" onClick={(event) => setEditing(false)}>
+        <Button variant="secondary" onClick={(_e) => setEditing(false)}>
           Cancel
         </Button>
-        <Button onClick={(event) => onUpdate(localContent)}>Save</Button>
+        <Button primary onClick={(_e) => onUpdate(localContent)}>Save</Button>
       </ButtonGroupStyled>
     </>
   );

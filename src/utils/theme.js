@@ -22,7 +22,7 @@ const light = {
   ...base,
   name: themes.LIGHT,
   kind: themes.LIGHT,
-  accent: "#66d1b6",
+  accent: "#51a791",
   background: "#e9eaf0",
   text: "#111424",
 };
@@ -31,9 +31,9 @@ const dark = {
   ...base,
   name: themes.DARK,
   kind: themes.DARK,
-  accent: "#66d1b6",
-  background: "#292D3E",
-  text: "#EEEFF1",
+  accent: "#51a791",
+  background: "#24283b",
+  text: "#a9b1d6",
 };
 
 const derive = (base) => ({
