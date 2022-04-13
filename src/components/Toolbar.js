@@ -69,7 +69,8 @@ const Toolbar = ({ settings, setTheme, openExport, data, date, setDate }) => {
 
   React.useEffect(() => {
     setTheme(settings.theme);
-  }, [settings])
+    /* eslint-disable-next-line */
+  }, [settings.theme])
 
   return (
     <>

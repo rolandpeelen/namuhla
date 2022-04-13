@@ -149,6 +149,7 @@ const Exporter = ({ settings, date, dailies, closeExport }) => {
       }** \n\n ${previousReplaced}   \n\n\n ------ \n **${date === getToday() ? "Today" : currentDaily.date
       }** \n\n ${currentReplaced}`
     );
+    /* eslint-disable-next-line */
   }, [
     current.data,
     previous.data,
