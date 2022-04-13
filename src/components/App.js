@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useSubscription } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import React from "react";
 import CurrentDaily from "./CurrentDaily";
 import Header from "./Header";
@@ -52,6 +52,7 @@ const App = ({ logoutHandler, setTheme }) => {
         refetchQueries: [queries.GET_SETTINGS],
       });
     }
+    /* eslint-disable-next-line */
   }, [settings.loading, settings.data, dailies.loading, dailies.data]);
 
   if (!!dailies.error) {

@@ -52,6 +52,7 @@ const CurrentDaily = ({ date, data }) => {
       })
       .then(insertDaily)
       .catch((e) => console.log(e));
+    /* eslint-disable-next-line */
   }, [client, date, data.dailies, currentDaily, creatingDaily]);
 
   if (!currentDaily) {

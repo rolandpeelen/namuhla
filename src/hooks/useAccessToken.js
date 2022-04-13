@@ -23,6 +23,7 @@ function useAccessToken() {
 
   useEffect(() => {
     getAccessToken();
+    /* eslint-disable-next-line */
   }, [getAccessTokenSilently, user?.sub]);
 
   return { getAccessToken, state: state[0], data: state[1] };

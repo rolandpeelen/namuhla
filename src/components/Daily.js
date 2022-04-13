@@ -26,7 +26,7 @@ const Container = styled.div`
   }
   & a:hover {
     color: ${({ theme }) =>
-      theme.kind === "dark" ? theme.accentL1 : theme.accentD1};
+    theme.kind === "dark" ? theme.accentL1 : theme.accentD1};
   }
 `;
 
@@ -128,13 +128,13 @@ const render = (content, onUpdate, sourcePosition) => (node, i, arr) => {
 
 const renderListItem =
   (content, onUpdate) =>
-  ({ node, sourcePosition, ordered, ...props }) => {
-    return (
-      <ListItem>
-        {node.children.map(render(content, onUpdate, sourcePosition))}
-      </ListItem>
-    );
-  };
+    ({ node, sourcePosition }) => {
+      return (
+        <ListItem>
+          {node.children.map(render(content, onUpdate, sourcePosition))}
+        </ListItem>
+      );
+    };
 
 const StyledSyntaxHighlighter = styled(SyntaxHighlighter)`
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -150,6 +150,7 @@ const View = ({ id, content, onUpdate, setEditing }) => {
       500
     );
     return () => document.removeEventListener("keyup", handleKeyDown);
+    /* eslint-disable-next-line */
   }, []);
 
   return (
@@ -248,6 +249,7 @@ const Edit = ({ content, onUpdate, setEditing }) => {
     VimMode.Vim.defineEx("wq", "wq", () => onUpdate(monaco.editor.getValue()));
     VimMode.Vim.defineEx("qa", "qa", () => setEditing(false));
     VimMode.Vim.defineEx("q", "q", () => setEditing(false));
+    /* eslint-disable-next-line */
   }, [monaco]);
 
   return (

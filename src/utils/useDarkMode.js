@@ -14,12 +14,14 @@ export const useDarkMode = () => {
   const handleSetTheme = React.useCallback((newTheme) => {
     localStorage.setItem(THEME_KEY_LOCALSTORAGE, newTheme);
     setTheme(newTheme);
-  }, [theme, setTheme]);
+    /* eslint-disable-next-line */
+  }, [setTheme]);
 
 
   React.useEffect(() => {
     setTheme(getFromLocalStorage());
     setDarkModeReady(true);
+    /* eslint-disable-next-line */
   }, []);
 
   return [theme, handleSetTheme, darkModeReady];
