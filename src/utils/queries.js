@@ -1,5 +1,39 @@
 import { gql } from "@apollo/client";
 
+const GET_SETTINGS = gql`
+  query onSettingsUpdate {
+    settings {
+      id
+      todoEmoji
+      notDoneEmoji
+      doneEmoji
+      theme
+      vimMode
+    }
+  }
+`;
+
+const INSERT_SETTINGS = gql`
+  mutation insertSettingsOne {
+    insert_settings_one(
+      object: {
+        notDoneEmoji: ":x:"
+        doneEmoji: ":white_check_mark:"
+        todoEmoji: ":construction:"
+        vimMode: false
+        theme: dark
+      }
+    ) {
+      id
+      todoEmoji
+      doneEmoji
+      notDoneEmoji
+      theme
+      vimMode
+    }
+  }
+`;
+
 const GET_DAILIES = gql`
   query dailies {
     dailies(order_by: { date: desc }) {
@@ -21,7 +55,11 @@ const GET_DAILY = gql`
 
 const GET_PREVIOUS_DAILY = gql`
   query getPreviousDaily($date: date!) {
-    dailies(order_by: {date: desc}, where: { date: { _lt: $date } }, limit: 1) {
+    dailies(
+      order_by: { date: desc }
+      where: { date: { _lt: $date } }
+      limit: 1
+    ) {
       id
       date
       content
@@ -47,7 +85,7 @@ const UPDATE_DAILY = gql`
   ) {
     update_dailies_by_pk(
       pk_columns: { id: $id }
-      _set: { date_updated: $dateUpdated, content: $content }
+      _set: { dateUpdated: $dateUpdated, content: $content }
     ) {
       id
       content
@@ -56,6 +94,8 @@ const UPDATE_DAILY = gql`
 `;
 
 const queries = {
+  GET_SETTINGS,
+  INSERT_SETTINGS,
   GET_DAILY,
   GET_PREVIOUS_DAILY,
   GET_DAILIES,

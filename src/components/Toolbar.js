@@ -3,6 +3,24 @@ import DatePicker from "./DatePicker";
 import ToolbarActions from "./ToolbarActions";
 import styled from "styled-components";
 
+import { useMutation, gql } from "@apollo/client";
+import queries from "../utils/queries.js";
+
+const UPDATE_SETTINGS = gql`
+  mutation updateSettings(
+    $id: uuid!
+    $theme: themes_enum!
+    $dateUpdated: timestamptz!
+  ) {
+    update_settings_by_pk(
+      pk_columns: { id: $id }
+      _set: { dateUpdated: $dateUpdated, theme: $theme }
+    ) {
+      id
+    }
+  }
+`;
+
 const DatePickerContainer = styled.div`
   padding: 0.5rem 0.6rem;
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -34,14 +52,33 @@ const Container = styled.div`
   }
 `;
 
-const Toolbar = ({ setTheme, openExport, data, date, setDate }) => {
+const Toolbar = ({ settings, setTheme, openExport, data, date, setDate }) => {
+  const [updateThemeMutation] = useMutation(UPDATE_SETTINGS);
+
+  const handleSetTheme = (theme) => {
+    setTheme(theme);
+    updateThemeMutation({
+      variables: {
+        id: settings.id,
+        theme,
+        dateUpdated: new Date().toISOString(),
+      },
+      refetchQueries: [queries.GET_SETTINGS],
+    })
+  }
+
+  React.useEffect(() => {
+    setTheme(settings.theme);
+  }, [settings])
+
   return (
     <>
       <Container>
         <ToolbarActionsContainer>
           <ToolbarActions
+            themeName={settings.theme}
             setDate={setDate}
-            setTheme={setTheme}
+            setTheme={handleSetTheme}
             openExport={openExport}
           />
         </ToolbarActionsContainer>

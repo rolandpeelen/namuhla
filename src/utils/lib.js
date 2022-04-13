@@ -8,8 +8,9 @@ const addDays = (date, days) => {
   return new Date(newDate);
 };
 
+const hasSettings = (data) => !!data && data.settings && data.settings.length > 0;
 const hasDailies = (data) => !!data && data.dailies && data.dailies.length > 0;
 const getDailyByDate = (data, date) => data.find((x) => x.date === date);
 const head = (xs) => xs[0];
 
-export { getDaysInMonth, getToday, hasDailies, getDailyByDate, head, addDays };
+export { getDaysInMonth, getToday, hasSettings, hasDailies, getDailyByDate, head, addDays };
