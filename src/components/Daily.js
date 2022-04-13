@@ -12,20 +12,21 @@ import remarkGemoji from "remark-gemoji";
 import MonacoEditor from "react-monaco-editor";
 import { VimMode, initVimMode } from "monaco-vim";
 import { editor, markdown } from "../utils/editor-theme.js";
-import { atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs'
-
-
+import { atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-self: start;
-  padding-top: 50px;
   padding-bottom: 10rem;
   & a {
-    opacity: 0.5 !important;
+    transition: all 0.2s ease-out;
     color: ${({ theme }) => theme.accent};
+  }
+  & a:hover {
+    color: ${({ theme }) =>
+      theme.kind === "dark" ? theme.accentL1 : theme.accentD1};
   }
 `;
 
@@ -35,7 +36,7 @@ const MonacoEditorStyled = styled(MonacoEditor)`
   height: 100% !important;
   display: flex;
   margin-bottom: 25px;
-  line-height: 2.0;
+  line-height: 2;
   overflow: hidden;
   border-radius: ${({ theme }) => theme.borderRadius};
 `;
@@ -44,7 +45,7 @@ const ButtonGroupStyled = styled(ButtonGroup)`
   background-color: transparent;
   margin-bottom: 25px !important;
   ${Button} {
-      margin: 0 0.25rem;
+    margin: 0 0.25rem;
   }
 `;
 
@@ -127,13 +128,13 @@ const render = (content, onUpdate, sourcePosition) => (node, i, arr) => {
 
 const renderListItem =
   (content, onUpdate) =>
-    ({ node, sourcePosition, ordered, ...props }) => {
-      return (
-        <ListItem>
-          {node.children.map(render(content, onUpdate, sourcePosition))}
-        </ListItem>
-      );
-    };
+  ({ node, sourcePosition, ordered, ...props }) => {
+    return (
+      <ListItem>
+        {node.children.map(render(content, onUpdate, sourcePosition))}
+      </ListItem>
+    );
+  };
 
 const StyledSyntaxHighlighter = styled(SyntaxHighlighter)`
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -158,11 +159,18 @@ const View = ({ id, content, onUpdate, setEditing }) => {
         rawSourcePos={true}
         components={{
           li: renderListItem(content, onUpdate),
-          code({ node, inline, className, sourcePosition, children, ...props }) {
-            const match = /language-(\w+)/.exec(className || '')
+          code({
+            node,
+            inline,
+            className,
+            sourcePosition,
+            children,
+            ...props
+          }) {
+            const match = /language-(\w+)/.exec(className || "");
             return !inline && match ? (
               <StyledSyntaxHighlighter
-                children={String(children).replace(/\n$/, '')}
+                children={String(children).replace(/\n$/, "")}
                 style={theme.kind === "dark" ? markdown : atomOneLight}
                 showLineNumbers={true}
                 language={match[1]}
@@ -173,8 +181,8 @@ const View = ({ id, content, onUpdate, setEditing }) => {
               <code className={className} {...props}>
                 {children}
               </code>
-            )
-          }
+            );
+          },
         }}
         children={content}
         remarkPlugins={[remarkBreaks, remarkGfm, remarkGemoji]}
@@ -224,13 +232,12 @@ const Edit = ({ content, onUpdate, setEditing }) => {
   };
 
   const editorWillMount = (monaco) => {
-
     monaco.editor.defineTheme("tokyo-night", {
       base: "vs-dark", // can also be vs-dark or hc-black
       inherit: true, // can also be false to completely replace the builtin rules
       rules: [],
       fontLigatures: true,
-      ...editor
+      ...editor,
     });
   };
 
@@ -270,7 +277,9 @@ const Edit = ({ content, onUpdate, setEditing }) => {
         <Button variant="secondary" onClick={(_e) => setEditing(false)}>
           Cancel
         </Button>
-        <Button primary onClick={(_e) => onUpdate(localContent)}>Save</Button>
+        <Button primary onClick={(_e) => onUpdate(localContent)}>
+          Save
+        </Button>
       </ButtonGroupStyled>
     </>
   );

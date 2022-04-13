@@ -10,8 +10,17 @@ import { getToday } from "../utils/lib.js";
 import { hasDailies } from "../utils/lib.js";
 import styled from "styled-components";
 
-const Container = styled.div`
-  height: 100%;
+const BodyContainer = styled.div`
+  min-height: 100%;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const DailyContainer = styled.div`
+  padding-top: 50px;
   display: flex;
   align-content: center;
   align-items: center;
@@ -44,25 +53,27 @@ const App = ({ logoutHandler, setTheme }) => {
 
   if (hasDailies(data)) {
     return (
-      <Container>
+      <BodyContainer>
         <Header
           date={date}
           logoutHandler={logoutHandler}
         />
         {/* TODO -> REFACTOR data -> dailies */}
-        <CurrentDaily date={date} data={data} />
-        <Toolbar
-          setTheme={setTheme}
-          openExport={() => setExporterActive(true)}
-          data={data} date={date} setDate={setDate} />
-        {exporterActive && (
-          <Exporter
-            closeExport={() => setExporterActive(false)}
-            date={date}
-            dailies={data.dailies}
-          />
-        )}
-      </Container>
+        <DailyContainer>
+          <CurrentDaily date={date} data={data} />
+          <Toolbar
+            setTheme={setTheme}
+            openExport={() => setExporterActive(true)}
+            data={data} date={date} setDate={setDate} />
+          {exporterActive && (
+            <Exporter
+              closeExport={() => setExporterActive(false)}
+              date={date}
+              dailies={data.dailies}
+            />
+          )}
+        </DailyContainer>
+      </BodyContainer>
     );
   }
 
