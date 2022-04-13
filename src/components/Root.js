@@ -28,6 +28,17 @@ const createApolloClient = (authToken) => {
     }),
     cache: new InMemoryCache(),
   });
+
+  // Perhaps moving to a httplink is faster?
+  //return new ApolloClient({
+  //link: new HttpLink({
+  //uri: "https://nearby-mammal-93.hasura.app/v1/graphql",
+  //headers: {
+  //Authorization: `Bearer ${authToken}`,
+  //},
+  //}),
+  //cache: new InMemoryCache(),
+  //});
 };
 
 const GlobalStyles = createGlobalStyle`
@@ -49,7 +60,7 @@ const GlobalStyles = createGlobalStyle`
           padding-bottom: 10rem;
     background: ${({ theme }) => theme.background};
     background-image: ${({ theme }) =>
-      `radial-gradient(farthest-corner at 50vw 100vh, ${theme.backgroundD1} 0%, ${theme.background} 50%)`} ;
+    `radial-gradient(farthest-corner at 50vw 100vh, ${theme.backgroundD1} 0%, ${theme.background} 50%)`} ;
     color: ${({ theme }) => theme.text};
     font-weight: 400;
     -webkit-font-smoothing: antialiased;

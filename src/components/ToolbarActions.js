@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "./Button.js";
 import Toggle from "./Toggle";
-import styled, { ThemeContext } from "styled-components";
+import styled from "styled-components";
 import { themes } from "../utils/theme.js";
 import { getToday } from "../utils/lib.js";
 
@@ -26,8 +26,7 @@ const Split = styled.div`
   justify-content: center;
 `;
 
-const ToolbarActions = ({ setDate, setTheme, openExport }) => {
-  const theme = React.useContext(ThemeContext);
+const ToolbarActions = ({ themeName, setDate, setTheme, openExport }) => {
 
   const handleSetTheme = (e) =>
     setTheme(e.target.checked ? themes.LIGHT : themes.DARK);
@@ -53,7 +52,7 @@ const ToolbarActions = ({ setDate, setTheme, openExport }) => {
       </Split>
       <Split end>
         <Toggle
-          defaultChecked={theme.name === themes.LIGHT}
+          defaultChecked={themeName === themes.LIGHT}
           icons={{
             checked: <RiSunLine size={14} />,
             unchecked: <RiMoonLine size={14} />,

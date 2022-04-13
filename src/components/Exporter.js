@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import React from "react";
 import styled from "styled-components";
 import * as Daily from "./Daily";
@@ -8,6 +8,27 @@ import queries from "../utils/queries.js";
 
 const COMBINED_ID = "combined-boi";
 const COPY_EVENT = "copy";
+const UPDATE_SETTINGS = gql`
+  mutation updateSettings(
+    $id: uuid!
+    $dateUpdated: timestamptz!
+    $todoEmoji: String!
+    $notDoneEmoji: String!
+    $doneEmoji: String!
+  ) {
+    update_settings_by_pk(
+      pk_columns: { id: $id }
+      _set: {
+        dateUpdated: $dateUpdated
+        todoEmoji: $todoEmoji
+        notDoneEmoji: $notDoneEmoji
+        doneEmoji: $doneEmoji
+      }
+    ) {
+      id
+    }
+  }
+`;
 
 const Container = styled.div`
   display: flex;
@@ -67,11 +88,23 @@ const replaceEmojis = (checkedEmoji, notCheckedEmoji, xs) =>
     )
     .join("\n");
 
-const Exporter = ({ date, dailies, closeExport }) => {
-  const [doneEmoji, setDoneEmoji] = React.useState(":white_check_mark: -");
-  const [todoEmoji, setTodoEmoji] = React.useState(":construction: -");
-  const [notDoneEmoji, setNotDoneEmoji] = React.useState(":x: -");
+const Exporter = ({ settings, date, dailies, closeExport }) => {
+  const [updateThemeMutation] = useMutation(UPDATE_SETTINGS);
   const [combined, setCombined] = React.useState("");
+
+  const updateEmoji = (emoji) => {
+    updateThemeMutation({
+      variables: {
+        id: settings.id,
+        todoEmoji: settings.todoEmoji,
+        notDoneEmoji: settings.notDoneEmoji,
+        doneEmoji: settings.doneEmoji,
+        ...emoji, // Overwrite only this one
+        dateUpdated: new Date().toISOString(),
+      },
+      refetchQueries: [queries.GET_SETTINGS],
+    });
+  };
 
   const current = useQuery(queries.GET_DAILY, {
     variables: { id: getDailyByDate(dailies, date).id },
@@ -98,15 +131,31 @@ const Exporter = ({ date, dailies, closeExport }) => {
     if (!current.data || !previous.data) return;
 
     const previousDaily = head(previous.data.dailies);
-    const previousReplaced = replaceEmojis(doneEmoji, notDoneEmoji, previousDaily.content);
+    const previousReplaced = replaceEmojis(
+      settings.doneEmoji,
+      settings.notDoneEmoji,
+      previousDaily.content
+    );
 
     const currentDaily = head(current.data.dailies);
-    const currentReplaced = replaceEmojis(doneEmoji, todoEmoji, currentDaily.content);
+    const currentReplaced = replaceEmojis(
+      settings.doneEmoji,
+      settings.todoEmoji,
+      currentDaily.content
+    );
 
     setCombined(
-            `**${previousDaily.date}** \n\n ${previousReplaced}   \n\n\n ------ \n **${date === getToday() ? "Today" : currentDaily.date}** \n\n ${currentReplaced}`
+      `**${previousDaily.date
+      }** \n\n ${previousReplaced}   \n\n\n ------ \n **${date === getToday() ? "Today" : currentDaily.date
+      }** \n\n ${currentReplaced}`
     );
-  }, [current.data, previous.data, doneEmoji, todoEmoji, notDoneEmoji]);
+  }, [
+    current.data,
+    previous.data,
+    settings.doneEmoji,
+    settings.todoEmoji,
+    settings.notDoneEmoji,
+  ]);
 
   return (
     <Container>
@@ -126,16 +175,22 @@ const Exporter = ({ date, dailies, closeExport }) => {
         </Body>
         <Footer>
           <input
-            defaultValue={doneEmoji}
-            onBlur={(e) => setDoneEmoji(e.target.value)}
+          placeholder="Done Emoji"
+            disabled={updateThemeMutation.loading}
+            defaultValue={settings.doneEmoji}
+            onBlur={(e) => updateEmoji({ doneEmoji: e.target.value })}
           />
           <input
-            defaultValue={todoEmoji}
-            onBlur={(e) => setTodoEmoji(e.target.value)}
+          placeholder="Todo Emoji"
+            disabled={updateThemeMutation.loading}
+            defaultValue={settings.todoEmoji}
+            onBlur={(e) => updateEmoji({ todoEmoji: e.target.value })}
           />
           <input
-            defaultValue={notDoneEmoji}
-            onBlur={(e) => setNotDoneEmoji(e.target.value)}
+          placeholder="Not Done Emoji"
+            disabled={updateThemeMutation.loading}
+            defaultValue={settings.notDoneEmoji}
+            onBlur={(e) => updateEmoji({ notDoneEmoji: e.target.value })}
           />
           <Button invert onClick={copyToClipboard}>
             Copy
