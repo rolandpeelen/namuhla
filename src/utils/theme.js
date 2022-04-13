@@ -38,6 +38,8 @@ const dark = {
 
 const derive = (base) => ({
   ...base,
+  accentL1: chroma(base.accent).brighten(0.5).hex(),
+  accentD1: chroma(base.accent).darken(0.5).hex(),
   backgroundL1: chroma(base.background).brighten(0.1).hex(),
   backgroundL2: chroma(base.background).brighten(0.25).hex(),
   backgroundL3: chroma(base.background).brighten(0.5).hex(),
