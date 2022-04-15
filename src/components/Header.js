@@ -4,6 +4,16 @@ import { ThemeContext } from "styled-components";
 import Logo from "./Logo.js";
 import styled from "styled-components";
 import { RiLogoutBoxRLine } from "react-icons/ri";
+import { gql } from "@apollo/client";
+
+const GET_USER = gql`
+  query userProfile {
+    users {
+      id
+      profileImage
+    }
+  }
+`;
 
 const Container = styled.div`
   width: 100vw;

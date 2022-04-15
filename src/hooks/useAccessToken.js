@@ -26,6 +26,6 @@ function useAccessToken() {
     /* eslint-disable-next-line */
   }, [getAccessTokenSilently, user?.sub]);
 
-  return { getAccessToken, state: state[0], data: state[1] };
+  return { getAccessToken, state: state[0], data: state[1], user };
 }
 export { useAccessToken };

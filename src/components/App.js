@@ -35,7 +35,6 @@ const App = ({ logoutHandler, setTheme }) => {
   const dailies = useQuery(queries.GET_DAILIES);
   const settings = useQuery(queries.GET_SETTINGS);
   const [insertDailyMutation] = useMutation(queries.INSERT_DAILY);
-  const [insertSettingsMutation] = useMutation(queries.INSERT_SETTINGS);
 
   React.useEffect(() => {
     if (dailies.data && !hasDailies(dailies.data)) {
@@ -47,14 +46,8 @@ const App = ({ logoutHandler, setTheme }) => {
         refetchQueries: [queries.GET_DAILIES],
       });
     }
-
-    if (settings.data && !hasSettings(settings.data)) {
-      insertSettingsMutation({
-        refetchQueries: [queries.GET_SETTINGS],
-      });
-    }
     /* eslint-disable-next-line */
-  }, [settings.loading, settings.data, dailies.loading, dailies.data]);
+  }, [settings.loading, dailies.loading, dailies.data]);
 
   if (!!dailies.error) {
     console.log(dailies.error);
