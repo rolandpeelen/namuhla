@@ -10,9 +10,14 @@ import styled from "styled-components";
 import { ThemeContext } from "styled-components";
 import remarkGemoji from "remark-gemoji";
 import MonacoEditor from "react-monaco-editor";
+import Toggle from "./Toggle";
 import { VimMode, initVimMode } from "monaco-vim";
 import { editor, markdown } from "../utils/editor-theme.js";
+import { useMutation, gql } from "@apollo/client";
 import { atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import queries from "../utils/queries.js";
+import { SiVim } from "react-icons/si";
+import { RiInputCursorMove } from "react-icons/ri";
 
 const Container = styled.div`
   width: 100%;
@@ -32,18 +37,52 @@ const Container = styled.div`
 
 const MonacoEditorStyled = styled(MonacoEditor)`
   margin-top: 50px;
+  margin-bottom: 25px;
   width: 100% !important;
   height: 100% !important;
   display: flex;
-  margin-bottom: 25px;
   line-height: 2;
   overflow: hidden;
   border-radius: ${({ theme }) => theme.borderRadius};
 `;
+const EditContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Toolbar = styled.div`
+  height: 50px;
+  width: 66%;
+  z-index: 100;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px !important;
+  /* For some reason, 77px is the height of the statusbar */
+  margin-top: ${({ vimMode }) => (vimMode ? 25 : 77)}px !important;
+`;
+const ToolbarContent = styled.div`
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: start;
+`;
+
+const VimModeLabel = styled.h4`
+  font-weight: 500;
+  display: inline-flex;
+  margin: 0 1rem;
+`;
 
 const ButtonGroupStyled = styled(ButtonGroup)`
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
   background-color: transparent;
-  margin-bottom: 25px !important;
   ${Button} {
     margin: 0 0.25rem;
   }
@@ -195,8 +234,13 @@ const View = ({ id, content, onUpdate, setEditing }) => {
 
 const Status = styled.div`
   margin: 0.5rem 0;
+  width: 80%;
+  display: flex;
+  align-items: start;
+  justify-items: start;
+  align-content: start;
+  justify-content: start;
   span {
-    font-family: monospace;
     font-size: 16px;
     color: ${({ theme }) => theme.text};
   }
@@ -208,7 +252,6 @@ const Status = styled.div`
   input {
     font-size: 16px;
     padding: 0.25rem;
-    font-family: monospace;
     color: ${({ theme }) => theme.text};
     background: ${({ theme }) => theme.backgroundL1};
     border-radius: ${({ theme }) => theme.borderRadius};
@@ -221,15 +264,52 @@ const Status = styled.div`
   }
 `;
 
-const Edit = ({ content, onUpdate, setEditing }) => {
+const UPDATE_SETTINGS = gql`
+  mutation updateSettings(
+    $id: uuid!
+    $vimMode: Boolean!
+    $dateUpdated: timestamptz!
+  ) {
+    update_settings_by_pk(
+      pk_columns: { id: $id }
+      _set: { dateUpdated: $dateUpdated, vimMode: $vimMode }
+    ) {
+      id
+    }
+  }
+`;
+
+const Edit = ({ settings, content, onUpdate, setEditing }) => {
   const [localContent, setLocalContent] = React.useState(content);
   const [monaco, setMonaco] = React.useState(null);
+  const [vimEditor, setVimEditor] = React.useState(null);
   const theme = React.useContext(ThemeContext);
+  const [updateSettingsMutation] = useMutation(UPDATE_SETTINGS);
 
   const editorDidMount = (editor, monaco) => {
-    initVimMode(editor, document.getElementById("status"));
+    settings.vimMode &&
+      setVimEditor(initVimMode(editor, document.getElementById("status")));
     editor.focus();
     setMonaco({ editor, monaco });
+  };
+
+  const handleSetVimMode = (e) => {
+    updateSettingsMutation({
+      variables: {
+        id: settings.id,
+        vimMode: e.target.checked,
+        dateUpdated: new Date().toISOString(),
+      },
+      refetchQueries: [queries.GET_SETTINGS],
+    });
+    if (e.target.checked) {
+      setVimEditor(
+        initVimMode(monaco.editor, document.getElementById("status"))
+      );
+    } else {
+      vimEditor.dispose();
+      setVimEditor(null);
+    }
   };
 
   const editorWillMount = (monaco) => {
@@ -253,9 +333,10 @@ const Edit = ({ content, onUpdate, setEditing }) => {
   }, [monaco]);
 
   return (
-    <>
+    <EditContainer>
       <MonacoEditorStyled
         id="editor"
+        disabled={true}
         height={600}
         theme={theme.kind === "dark" ? "tokyo-night" : "vs"}
         language="markdown"
@@ -267,6 +348,7 @@ const Edit = ({ content, onUpdate, setEditing }) => {
           lineHeight: 2.2,
           fontSize: 16,
           fontLigatures: true,
+          fontFamily: "Fira Code",
           lineNumbers: "relative",
           wordWrap: "on",
         }}
@@ -275,15 +357,30 @@ const Edit = ({ content, onUpdate, setEditing }) => {
         editorDidMount={editorDidMount}
       />
       <Status id="status" />
-      <ButtonGroupStyled>
-        <Button variant="secondary" onClick={(_e) => setEditing(false)}>
-          Cancel
-        </Button>
-        <Button primary onClick={(_e) => onUpdate(localContent)}>
-          Save
-        </Button>
-      </ButtonGroupStyled>
-    </>
+      <Toolbar vimMode={!!vimEditor}>
+        <ToolbarContent>
+          <Toggle
+            id="vim-mode-status"
+            disabled={!monaco}
+            icons={{
+              checked: <SiVim size={14} />,
+              unchecked: <RiInputCursorMove size={14} />,
+            }}
+            defaultChecked={settings.vimMode}
+            onChange={handleSetVimMode}
+          />
+          <VimModeLabel id="vim-mode-label">Vim Bindings</VimModeLabel>
+        </ToolbarContent>
+        <ButtonGroupStyled>
+          <Button variant="secondary" onClick={(_e) => setEditing(false)}>
+            Cancel
+          </Button>
+          <Button primary onClick={(_e) => onUpdate(localContent)}>
+            Save
+          </Button>
+        </ButtonGroupStyled>
+      </Toolbar>
+    </EditContainer>
   );
 };
 

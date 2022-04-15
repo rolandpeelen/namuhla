@@ -5,7 +5,7 @@ import DailyWrapper from "./DailyWrapper";
 import queries from "../utils/queries.js";
 import { getToday, hasDailies, getDailyByDate, head } from "../utils/lib.js";
 
-const CurrentDaily = ({ date, data }) => {
+const CurrentDaily = ({ settings, date, data }) => {
   const client = useApolloClient();
   const creatingDaily = React.useRef(false);
   const currentDaily = React.useMemo(
@@ -64,7 +64,7 @@ const CurrentDaily = ({ date, data }) => {
     }
   }
 
-  return <DailyWrapper id={currentDaily.id} />;
+  return <DailyWrapper settings={settings} id={currentDaily.id} />;
 };
 
 export default CurrentDaily;

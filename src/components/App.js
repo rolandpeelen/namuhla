@@ -71,7 +71,9 @@ const App = ({ logoutHandler, setTheme }) => {
         <Header date={date} logoutHandler={logoutHandler} />
         {/* TODO -> REFACTOR data -> dailies */}
         <DailyContainer>
-          <CurrentDaily date={date} data={dailies.data} />
+          <CurrentDaily
+            settings={settingsObj}
+            date={date} data={dailies.data} />
           <Toolbar
             settings={settingsObj}
             setTheme={setTheme}

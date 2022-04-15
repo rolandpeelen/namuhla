@@ -16,7 +16,6 @@ const DateElement = styled(Button)`
   height: 2rem;
   margin: 0.25rem;
   padding: 0;
-  font-family: monospace;
   transition: all 0.3s ease-out;
   background: transparent;
   ${({ hasDate, theme }) =>

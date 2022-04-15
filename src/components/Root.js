@@ -65,9 +65,9 @@ const GlobalStyles = createGlobalStyle`
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: 'Noto Sans', sans-serif;
-    font-size: 18px;
-    line-height: 2.0;
+    font-family: 'Fira Code', monospace;
+    font-size: 16px;
+    line-height: 2.2;
     display: flex;
     justify-items: center;
     justify-content: center;
@@ -81,12 +81,8 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  code { font-family: 'Fira Code', monospace; }
-
-  @supports (font-variation-settings: normal) {
-    code { font-family: 'Fira Code VF', monospace; }
-  }
   *, *:before, *:after {
+    font-family: 'Fira Code', monospace;
     -webkit-box-sizing: inherit;
     -moz-box-sizing: inherit;
     box-sizing: inherit;
