@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, ButtonGroup } from "./Button.js";
 import styled from "styled-components";
+import { RiLogoutBoxRLine } from "react-icons/ri";
 
 const Container = styled.div`
   width: 100vw;
@@ -37,10 +38,12 @@ const Header = ({ date, logoutHandler, }) => {
       <Actions>
         <ButtonGroup transparent>
           <Button
+            iconLeft
             transparent
             className="btn-margin logoutBtn"
             onClick={logoutHandler}
           >
+            <RiLogoutBoxRLine />
             Log Out
           </Button>
         </ButtonGroup>
