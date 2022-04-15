@@ -1,6 +1,7 @@
 import { useApolloClient, useMutation } from "@apollo/client";
 import React from "react";
 import DailyWrapper from "./DailyWrapper";
+import Loader from "./Loader";
 
 import queries from "../utils/queries.js";
 import { getToday, hasDailies, getDailyByDate, head } from "../utils/lib.js";
@@ -26,7 +27,6 @@ const CurrentDaily = ({ settings, date, data }) => {
   React.useEffect(() => {
     if (date !== getToday() || !!currentDaily || creatingDaily.current) return;
 
-    console.log("Creating");
     creatingDaily.current = true;
 
     const dailies = data.dailies;
@@ -39,7 +39,7 @@ const CurrentDaily = ({ settings, date, data }) => {
       })
       .then(({ data }) => {
         if (!hasDailies)
-          return "# Welcome \n Here is your first daily! \n Click me to start editing...";
+          return new Error("Should never ever happen")
 
         const daily = head(data.dailies)
           .content.split("\n")
@@ -57,7 +57,7 @@ const CurrentDaily = ({ settings, date, data }) => {
 
   if (!currentDaily) {
     if (getToday() === date) {
-      return "Creating Daily!";
+      return <Loader message="Creating New Daily..." />;
     } else {
       // "Reverse Create Daily?"
       return "Create Daily?";

@@ -3,6 +3,8 @@ import React from "react";
 import styled from "styled-components";
 import * as Daily from "./Daily";
 import { Button } from "./Button";
+import * as Array from "../utils/Array.js";
+import * as Option from "../utils/Option.js";
 import { head, getToday, getDailyByDate } from "../utils/lib.js";
 import queries from "../utils/queries.js";
 
@@ -130,24 +132,31 @@ const Exporter = ({ settings, date, dailies, closeExport }) => {
   React.useEffect(() => {
     if (!current.data || !previous.data) return;
 
-    const previousDaily = head(previous.data.dailies);
-    const previousReplaced = replaceEmojis(
-      settings.doneEmoji,
-      settings.notDoneEmoji,
-      previousDaily.content
-    );
+    const previousDaily = Array.head(previous.data.dailies);
+    const previousReplaced = Option.map((x) =>
+      replaceEmojis(settings.doneEmoji, settings.notDoneEmoji, x.content)
+    )(previousDaily);
+    const previousDailyString = Option.map(
+      (x) => `**${Option.getOrElse("")(previousDaily.date)}** \n\n ${x}`
+    )(previousReplaced);
 
-    const currentDaily = head(current.data.dailies);
-    const currentReplaced = replaceEmojis(
-      settings.doneEmoji,
-      settings.todoEmoji,
-      currentDaily.content
-    );
+    const currentDaily = Array.head(current.data.dailies);
+    const currentReplaced = Option.map((x) =>
+      replaceEmojis(settings.doneEmoji, settings.todoEmoji, x.content)
+    )(currentDaily);
+    const currentDailyString = Option.map(
+      (x) => `**${date === getToday()
+          ? "Today"
+          : Option.getOrElse("")(currentDaily.date)
+        }** \n\n ${x}`
+    )(currentReplaced);
 
     setCombined(
-      `**${previousDaily.date
-      }** \n\n ${previousReplaced}   \n\n\n ------ \n **${date === getToday() ? "Today" : currentDaily.date
-      }** \n\n ${currentReplaced}`
+      [
+        Option.getOrElse("*-- No previous Daily --*")(previousDailyString),
+        "\n\n\n ----------------------- \n",
+        Option.getOrElse("No current Daily")(currentDailyString),
+      ].join("")
     );
     /* eslint-disable-next-line */
   }, [
@@ -176,19 +185,19 @@ const Exporter = ({ settings, date, dailies, closeExport }) => {
         </Body>
         <Footer>
           <input
-          placeholder="Done Emoji"
+            placeholder="Done Emoji"
             disabled={updateThemeMutation.loading}
             defaultValue={settings.doneEmoji}
             onBlur={(e) => updateEmoji({ doneEmoji: e.target.value })}
           />
           <input
-          placeholder="Todo Emoji"
+            placeholder="Todo Emoji"
             disabled={updateThemeMutation.loading}
             defaultValue={settings.todoEmoji}
             onBlur={(e) => updateEmoji({ todoEmoji: e.target.value })}
           />
           <input
-          placeholder="Not Done Emoji"
+            placeholder="Not Done Emoji"
             disabled={updateThemeMutation.loading}
             defaultValue={settings.notDoneEmoji}
             onBlur={(e) => updateEmoji({ notDoneEmoji: e.target.value })}

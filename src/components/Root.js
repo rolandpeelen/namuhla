@@ -4,7 +4,7 @@ import App from "./App";
 import Login from "./Auth/Login";
 import Loader from "./Loader";
 
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { HttpLink, ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 
@@ -92,7 +92,7 @@ const GlobalStyles = createGlobalStyle`
 
 const Root = () => {
   /* Data may contain error, or token, or be null when loading */
-  const { getAccessToken, state, data } = useAccessToken();
+  const { getAccessToken, state, data, user } = useAccessToken();
   const [theme, setTheme, darkModeReady] = useDarkMode();
   const [client, setClient] = React.useState(null);
 
@@ -116,7 +116,7 @@ const Root = () => {
       {state === authStates.UNAUTHORIZED && <Login />}
       {state === authStates.AUTHORIZED && client && (
         <ApolloProvider client={client}>
-          <App logoutHandler={handleLogout} setTheme={setTheme} />
+          <App client={client} logoutHandler={handleLogout} setTheme={setTheme} />
         </ApolloProvider>
       )}
     </ThemeProvider>

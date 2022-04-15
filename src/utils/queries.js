@@ -13,27 +13,6 @@ const GET_SETTINGS = gql`
   }
 `;
 
-const INSERT_SETTINGS = gql`
-  mutation insertSettingsOne {
-    insert_settings_one(
-      object: {
-        notDoneEmoji: ":x:"
-        doneEmoji: ":white_check_mark:"
-        todoEmoji: ":construction:"
-        vimMode: false
-        theme: dark
-      }
-    ) {
-      id
-      todoEmoji
-      doneEmoji
-      notDoneEmoji
-      theme
-      vimMode
-    }
-  }
-`;
-
 const GET_DAILIES = gql`
   query dailies {
     dailies(order_by: { date: desc }) {
@@ -95,7 +74,6 @@ const UPDATE_DAILY = gql`
 
 const queries = {
   GET_SETTINGS,
-  INSERT_SETTINGS,
   GET_DAILY,
   GET_PREVIOUS_DAILY,
   GET_DAILIES,
