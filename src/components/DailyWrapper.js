@@ -10,10 +10,10 @@ import styled from "styled-components";
 const Container = styled.div`
   height: 100%;
   overflow: auto;
-  width: 60vw;
+  width: ${({ editing }) => editing ? 70 : 60}vw;
 `;
 
-const DailyWrapper = ({ id }) => {
+const DailyWrapper = ({ settings, id }) => {
   const [editing, setEditing] = React.useState(false);
   const [updating, setUpdating] = React.useState(false);
 
@@ -48,11 +48,12 @@ const DailyWrapper = ({ id }) => {
       /* Go straight to edit mode if empty */
       daily.content.length === 0 && editing === false && setEditing(true);
       return (
-        <Container>
+        <Container editing={editing}>
           {updating && "updating"}
           {editing ? (
             <Daily.Edit
               {...daily}
+              settings={settings}
               setEditing={setEditing}
               onUpdate={onUpdate}
             />

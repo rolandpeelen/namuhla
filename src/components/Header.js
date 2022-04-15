@@ -19,7 +19,6 @@ const Title = styled.h2`
 `;
 
 const Date = styled.h4`
-  font-family: monospace;
   margin: 0;
   padding: 0;
 `;
