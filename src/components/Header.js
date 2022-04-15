@@ -1,5 +1,7 @@
 import React from "react";
 import { Button, ButtonGroup } from "./Button.js";
+import { ThemeContext } from "styled-components";
+import Logo from "./Logo.js";
 import styled from "styled-components";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 
@@ -14,7 +16,9 @@ const Container = styled.div`
   top: 0;
 `;
 
-const Title = styled.h2`
+const Title = styled.div`
+  display: flex;
+  justify-content: center;
   margin: 0 0 0 1rem;
   padding: 0;
 `;
@@ -29,10 +33,14 @@ const Actions = styled.div`
   padding: 0;
 `;
 
-const Header = ({ date, logoutHandler, }) => {
+const Header = ({ date, logoutHandler }) => {
+  const theme = React.useContext(ThemeContext);
+
   return (
     <Container>
-      <Title>Namuhla</Title>
+      <Title>
+        <Logo width={60} height={20} fill={theme.text} />
+      </Title>
 
       <Date>{date}</Date>
       <Actions>

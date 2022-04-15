@@ -2,12 +2,13 @@ import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { Button } from "../Button.js";
+import Loader from "../Loader";
 
 const Login = () => {
   console.dir(useAuth0());
   const { loading, loginWithRedirect } = useAuth0();
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader message="Loading..." />
   }
   return (
     <div className="overlay">
