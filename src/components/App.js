@@ -4,6 +4,7 @@ import CurrentDaily from "./CurrentDaily";
 import Header from "./Header";
 import Exporter from "./Exporter";
 import Toolbar from "./Toolbar";
+import Loader from "./Loader";
 
 import queries from "../utils/queries.js";
 import { getToday } from "../utils/lib.js";
@@ -60,8 +61,9 @@ const App = ({ logoutHandler, setTheme }) => {
     return "error";
   }
 
+
   if (dailies.loading || settings.loading) {
-    return "Loading";
+    return <Loader message="Loading..." />
   }
 
   if (hasDailies(dailies.data) && hasSettings(settings.data)) {

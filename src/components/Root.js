@@ -2,6 +2,7 @@ import React from "react";
 
 import App from "./App";
 import Login from "./Auth/Login";
+import Loader from "./Loader";
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
@@ -111,7 +112,7 @@ const Root = () => {
   return (
     <ThemeProvider theme={getTheme(theme)}>
       <GlobalStyles />
-      {state === authStates.LOADING && "Authorizing"}
+      {state === authStates.LOADING && <Loader message="Authorizing..." />}
       {state === authStates.UNAUTHORIZED && <Login />}
       {state === authStates.AUTHORIZED && client && (
         <ApolloProvider client={client}>

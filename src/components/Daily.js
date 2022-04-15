@@ -240,6 +240,7 @@ const Status = styled.div`
   justify-items: start;
   align-content: start;
   justify-content: start;
+    background: ${({ theme }) => theme.background};
   span {
     font-size: 16px;
     color: ${({ theme }) => theme.text};

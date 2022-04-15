@@ -6,6 +6,7 @@ import * as Daily from "./Daily";
 import { hasDailies, head } from "../utils/lib.js";
 import queries from "../utils/queries.js";
 import styled from "styled-components";
+import Loader from "./Loader";
 
 const Container = styled.div`
   height: 100%;
@@ -37,8 +38,8 @@ const DailyWrapper = ({ settings, id }) => {
   };
 
   switch (true) {
-    case loading:
-      return "loading";
+    case (loading || updating):
+      return <Loader message="Loading..." />
     case !!error: {
       console.log(error);
       return "error";
@@ -49,7 +50,7 @@ const DailyWrapper = ({ settings, id }) => {
       daily.content.length === 0 && editing === false && setEditing(true);
       return (
         <Container editing={editing}>
-          {updating && "updating"}
+          {updating && <Loader inline />}
           {editing ? (
             <Daily.Edit
               {...daily}
