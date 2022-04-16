@@ -11,7 +11,7 @@ const eq = (a, b) => a.t === b.t && (isSome(a) ? a.val === b.val : true);
 const map = fn => x => (isSome(x) ? some(fn(x.val)) : x);
 const flatten = x => (isSome(x) ? x.val : x);
 const flatmap = fn => Function.compose(flatten)(map(fn));
-const getOrElse = or => x => (x.t === someT ? x.val : or);
+const getOrElse = or => x => (x && x.t === someT ? x.val : or);
 const getOrUndefined = getOrElse(undefined);
 const getOrNull = getOrElse(null);
 const getOrThrow = x =>

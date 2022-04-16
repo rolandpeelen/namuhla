@@ -137,7 +137,10 @@ const Exporter = ({ settings, date, dailies, closeExport }) => {
       replaceEmojis(settings.doneEmoji, settings.notDoneEmoji, x.content)
     )(previousDaily);
     const previousDailyString = Option.map(
-      (x) => `**${Option.getOrElse("")(previousDaily.date)}** \n\n ${x}`
+      (x) =>
+        `**${Option.getOrElse("")(
+          Option.map((daily) => daily.date)(previousDaily)
+        )}** \n\n ${x}`
     )(previousReplaced);
 
     const currentDaily = Array.head(current.data.dailies);
@@ -145,9 +148,13 @@ const Exporter = ({ settings, date, dailies, closeExport }) => {
       replaceEmojis(settings.doneEmoji, settings.todoEmoji, x.content)
     )(currentDaily);
     const currentDailyString = Option.map(
-      (x) => `**${date === getToday()
-          ? "Today"
-          : Option.getOrElse("")(currentDaily.date)
+      (x) =>
+        `**${
+          date === getToday()
+            ? "Today"
+            : Option.getOrElse("")(
+                Option.map((daily) => daily.date)(currentDaily)
+              )
         }** \n\n ${x}`
     )(currentReplaced);
 
