@@ -1,5 +1,20 @@
 import { gql } from "@apollo/client";
 
+const UPDATE_THEME = gql`
+  mutation updateTheme(
+    $id: uuid!
+    $theme: themes_enum!
+    $dateUpdated: timestamptz!
+  ) {
+    update_settings_by_pk(
+      pk_columns: { id: $id }
+      _set: { dateUpdated: $dateUpdated, theme: $theme }
+    ) {
+      id
+    }
+  }
+`;
+
 const GET_SETTINGS = gql`
   query onSettingsUpdate {
     settings {
@@ -73,6 +88,7 @@ const UPDATE_DAILY = gql`
 `;
 
 const queries = {
+  UPDATE_THEME,
   GET_SETTINGS,
   GET_DAILY,
   GET_PREVIOUS_DAILY,

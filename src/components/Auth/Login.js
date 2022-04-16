@@ -1,36 +1,71 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
-import { Button } from "../Button.js";
+import { Button, ButtonGroup } from "../Button.js";
 import Loader from "../Loader";
+import styled from "styled-components";
+import { RiLoginBoxLine, RiLoginCircleLine } from "react-icons/ri";
+
+const Container = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+`;
+
+const LoginModal = styled.div`
+padding: 2rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
+  background-color: ${({ theme }) => theme.backgroundD1};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+text-align: center;
+`;
 
 const Login = () => {
-  console.dir(useAuth0());
   const { loading, loginWithRedirect } = useAuth0();
   if (loading) {
-    return <Loader message="Loading..." />
+    return <Loader message="Loading..." />;
   }
   return (
-    <div className="overlay">
-      <div className="overlay-content">
-        <div className="overlay-heading">
-          Welcome to the GraphQL tutorial app
-        </div>
-        <div className="overlay-message">Please login to continue</div>
-        <div className="overlay-action">
+    <Container>
+      <LoginModal>
+        <h2>Welcome!</h2>
+        <p>Good to have you back... <br /> Please login / signup using the link below.</p>
+        <ButtonGroup>
           <Button
-            id="qsLoginBtn"
-            variant="primary"
-            className="btn-margin loginBtn"
+          iconLeft
             onClick={() => {
               loginWithRedirect({});
             }}
           >
+            <RiLoginCircleLine />
+            Sign Up
+          </Button>
+          <Button
+            primary
+          iconLeft
+            onClick={() => {
+              loginWithRedirect({});
+            }}
+          >
+            <RiLoginBoxLine />
             Log In
           </Button>
-        </div>
-      </div>
-    </div>
+        </ButtonGroup>
+      </LoginModal>
+    </Container>
   );
 };
 

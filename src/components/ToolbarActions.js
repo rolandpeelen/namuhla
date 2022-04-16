@@ -50,7 +50,7 @@ const ToolbarActions = ({ themeName, setDate, setTheme, openExport }) => {
           Share
         </Button>
       </Split>
-      <Split end>
+      <Split>
         <Toggle
           defaultChecked={themeName === themes.LIGHT}
           icons={{

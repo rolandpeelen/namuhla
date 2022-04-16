@@ -18,6 +18,7 @@ const DateElement = styled(Button)`
   padding: 0;
   transition: all 0.3s ease-out;
   background: transparent;
+  border-radius: ${({ theme }) => theme.borderRadius} !important;
   ${({ hasDate, theme }) =>
     hasDate
       ? css`

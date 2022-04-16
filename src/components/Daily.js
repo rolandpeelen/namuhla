@@ -130,7 +130,7 @@ const Checkbox = ({ sourcePosition, content, onUpdate, checked }) => {
 
 const render = (content, onUpdate, sourcePosition) => (node, i, arr) => {
   if (node.type === "text") return node.value;
-  if (node.tagName === "br") return <br />;
+  if (node.tagName === "br") return <br key={"br-" + i} />;
   if (node.tagName === "p") {
     return Array.isArray(node.children)
       ? node.children.map(render(content, onUpdate, sourcePosition))
@@ -147,6 +147,7 @@ const render = (content, onUpdate, sourcePosition) => (node, i, arr) => {
 
     return (
       <Checkbox
+        key={"checkbox-" + i}
         sourcePosition={maybeCorrectSourcePosition(
           reconstructedLine,
           sourcePosition,
@@ -163,13 +164,12 @@ const render = (content, onUpdate, sourcePosition) => (node, i, arr) => {
     ? node.children.map(render(content, onUpdate, sourcePosition))
     : [];
 
-  return React.createElement(node.tagName, node.properties, children);
+  return React.createElement(node.tagName, { ...node.properties, key: node.tagName + i }, children);
 };
 
 const renderListItem =
   (content, onUpdate) =>
     ({ node, sourcePosition }) => {
-      console.log(node);
       return (
         <ListItem>
           {node.children.map(render(content, onUpdate, sourcePosition))}

@@ -92,18 +92,17 @@ const GlobalStyles = createGlobalStyle`
 
 const Root = () => {
   /* Data may contain error, or token, or be null when loading */
-  const { getAccessToken, state, data, user } = useAccessToken();
+  const { state, data, user } = useAccessToken();
   const [theme, setTheme, darkModeReady] = useDarkMode();
   const [client, setClient] = React.useState(null);
 
   const { logout } = useAuth0();
 
   const handleLogout = () => {
-    logout();
-    getAccessToken();
+    logout({ returnTo: window.location.href });
   };
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     state === authStates.AUTHORIZED && setClient(createApolloClient(data));
   }, [state, data]);
 
