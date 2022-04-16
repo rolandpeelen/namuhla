@@ -7,7 +7,7 @@ import Toolbar from "./Toolbar";
 import Loader from "./Loader";
 
 import queries from "../utils/queries.js";
-import { getToday } from "../utils/lib.js";
+import { getToday, head } from "../utils/lib.js";
 import { hasSettings, hasDailies } from "../utils/lib.js";
 import styled from "styled-components";
 
@@ -47,7 +47,14 @@ const App = ({ logoutHandler, setTheme }) => {
       });
     }
     /* eslint-disable-next-line */
-  }, [settings.loading, dailies.loading, dailies.data]);
+  }, [dailies.loading, dailies.data]);
+
+  React.useEffect(() => {
+    if (settings.data && settings.data.settings && settings.data.settings.length > 0) {
+      setTheme(head(settings.data.settings).theme);
+    }
+    /* eslint-disable-next-line */
+  }, [settings.data])
 
   if (!!dailies.error) {
     console.log(dailies.error);
@@ -63,8 +70,12 @@ const App = ({ logoutHandler, setTheme }) => {
     const settingsObj = settings.data.settings[0]
     return (
       <BodyContainer>
-        <Header date={date} logoutHandler={logoutHandler} />
-        {/* TODO -> REFACTOR data -> dailies */}
+        <Header
+          settings={settingsObj}
+          setTheme={setTheme}
+          date={date}
+          setDate={setDate}
+          logoutHandler={logoutHandler} />
         <DailyContainer>
           <CurrentDaily
             settings={settingsObj}

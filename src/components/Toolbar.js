@@ -3,23 +3,8 @@ import DatePicker from "./DatePicker";
 import ToolbarActions from "./ToolbarActions";
 import styled from "styled-components";
 
-import { useMutation, gql } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import queries from "../utils/queries.js";
-
-const UPDATE_SETTINGS = gql`
-  mutation updateSettings(
-    $id: uuid!
-    $theme: themes_enum!
-    $dateUpdated: timestamptz!
-  ) {
-    update_settings_by_pk(
-      pk_columns: { id: $id }
-      _set: { dateUpdated: $dateUpdated, theme: $theme }
-    ) {
-      id
-    }
-  }
-`;
 
 const DatePickerContainer = styled.div`
   padding: 0.5rem 0.6rem;
@@ -53,7 +38,7 @@ const Container = styled.div`
 `;
 
 const Toolbar = ({ settings, setTheme, openExport, data, date, setDate }) => {
-  const [updateThemeMutation] = useMutation(UPDATE_SETTINGS);
+  const [updateThemeMutation] = useMutation(queries.UPDATE_THEME);
 
   const handleSetTheme = (theme) => {
     setTheme(theme);
@@ -66,11 +51,6 @@ const Toolbar = ({ settings, setTheme, openExport, data, date, setDate }) => {
       refetchQueries: [queries.GET_SETTINGS],
     })
   }
-
-  React.useEffect(() => {
-    setTheme(settings.theme);
-    /* eslint-disable-next-line */
-  }, [settings.theme])
 
   return (
     <>

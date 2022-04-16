@@ -62,12 +62,8 @@ const ButtonGroup = styled.div`
     if (transparent) return "transparent";
     return theme.background;
   }};
-  ${Button} & {
+  ${Button} {
     border-radius: 0;
-    background-color: ${({ transparent, theme }) => {
-      if (transparent) return "transparent";
-      return theme.background;
-    }}
 `;
 
 export { ButtonGroup, Button };
