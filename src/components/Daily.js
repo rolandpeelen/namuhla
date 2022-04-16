@@ -130,6 +130,7 @@ const Checkbox = ({ sourcePosition, content, onUpdate, checked }) => {
 
 const render = (content, onUpdate, sourcePosition) => (node, i, arr) => {
   if (node.type === "text") return node.value;
+  if (node.tagName === "br") return <br />;
   if (node.tagName === "p") {
     return Array.isArray(node.children)
       ? node.children.map(render(content, onUpdate, sourcePosition))
@@ -168,6 +169,7 @@ const render = (content, onUpdate, sourcePosition) => (node, i, arr) => {
 const renderListItem =
   (content, onUpdate) =>
     ({ node, sourcePosition }) => {
+      console.log(node);
       return (
         <ListItem>
           {node.children.map(render(content, onUpdate, sourcePosition))}
