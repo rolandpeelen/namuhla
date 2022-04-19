@@ -16,7 +16,7 @@ const base = {
   borderRadius: "5px",
   sun: "#fff474",
   moon: "#3c3b5f",
-}
+};
 
 const light = {
   ...base,
@@ -46,7 +46,7 @@ const derive = (base) => ({
   backgroundD1: chroma(base.background).darken(0.1).hex(),
   backgroundD2: chroma(base.background).darken(0.25).hex(),
   backgroundD3: chroma(base.background).darken(0.5).hex(),
-})
+});
 
 const getTheme = (theme) => {
   switch (theme) {

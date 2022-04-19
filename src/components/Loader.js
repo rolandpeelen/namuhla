@@ -52,7 +52,7 @@ const Path = styled.path`
           transform: translateY(${-4 + 1 * weightFactor}px);
         }
       }
-      animation: bounce${number} 1.5s ${number * 0.43}s ease infinite;
+      animation: ${"bounce" + number} 1.5s ${number * 0.43}s ease infinite;
       fill: ${theme.text};
     `};
 `;

@@ -31,7 +31,7 @@ const Container = styled.div`
   }
   & a:hover {
     color: ${({ theme }) =>
-    theme.kind === "dark" ? theme.accentL1 : theme.accentD1};
+      theme.kind === "dark" ? theme.accentL1 : theme.accentD1};
   }
 `;
 
@@ -164,18 +164,22 @@ const render = (content, onUpdate, sourcePosition) => (node, i, arr) => {
     ? node.children.map(render(content, onUpdate, sourcePosition))
     : [];
 
-  return React.createElement(node.tagName, { ...node.properties, key: node.tagName + i }, children);
+  return React.createElement(
+    node.tagName,
+    { ...node.properties, key: node.tagName + i },
+    children
+  );
 };
 
 const renderListItem =
   (content, onUpdate) =>
-    ({ node, sourcePosition }) => {
-      return (
-        <ListItem>
-          {node.children.map(render(content, onUpdate, sourcePosition))}
-        </ListItem>
-      );
-    };
+  ({ node, sourcePosition }) => {
+    return (
+      <ListItem>
+        {node.children.map(render(content, onUpdate, sourcePosition))}
+      </ListItem>
+    );
+  };
 
 const StyledSyntaxHighlighter = styled(SyntaxHighlighter)`
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -242,7 +246,7 @@ const Status = styled.div`
   justify-items: start;
   align-content: start;
   justify-content: start;
-    background: ${({ theme }) => theme.background};
+  background: ${({ theme }) => theme.background};
   span {
     font-size: 16px;
     color: ${({ theme }) => theme.text};

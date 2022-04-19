@@ -1507,155 +1507,155 @@ const editor = {
 };
 
 const markdown = {
-  "code[class*=\"language-\"]": {
-    "color": "#a9b1d6",
-    "fontFamily": "Consolas, Monaco, \"Andale Mono\", \"Ubuntu Mono\", monospace",
-    "textAlign": "left",
-    "whiteSpace": "pre",
-    "wordSpacing": "normal",
-    "wordBreak": "normal",
-    "wordWrap": "normal",
-    "lineHeight": "1.5",
-    "MozTabSize": "4",
-    "OTabSize": "4",
-    "tabSize": "4",
-    "WebkitHyphens": "none",
-    "MozHyphens": "none",
-    "msHyphens": "none",
-    "hyphens": "none"
+  'code[class*="language-"]': {
+    color: "#a9b1d6",
+    fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+    textAlign: "left",
+    whiteSpace: "pre",
+    wordSpacing: "normal",
+    wordBreak: "normal",
+    wordWrap: "normal",
+    lineHeight: "1.5",
+    MozTabSize: "4",
+    OTabSize: "4",
+    tabSize: "4",
+    WebkitHyphens: "none",
+    MozHyphens: "none",
+    msHyphens: "none",
+    hyphens: "none",
   },
-  "pre[class*=\"language-\"]": {
-    "color": "white",
-    "fontFamily": "Consolas, Monaco, \"Andale Mono\", \"Ubuntu Mono\", monospace",
-    "textAlign": "left",
-    "whiteSpace": "pre",
-    "wordSpacing": "normal",
-    "wordBreak": "normal",
-    "wordWrap": "normal",
-    "lineHeight": "1.5",
-    "MozTabSize": "4",
-    "OTabSize": "4",
-    "tabSize": "4",
-    "WebkitHyphens": "none",
-    "MozHyphens": "none",
-    "msHyphens": "none",
-    "hyphens": "none",
-    "padding": "1em",
-    "margin": "0.5em 0",
-    "overflow": "auto",
-    "background": "#1a1b26"
+  'pre[class*="language-"]': {
+    color: "white",
+    fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+    textAlign: "left",
+    whiteSpace: "pre",
+    wordSpacing: "normal",
+    wordBreak: "normal",
+    wordWrap: "normal",
+    lineHeight: "1.5",
+    MozTabSize: "4",
+    OTabSize: "4",
+    tabSize: "4",
+    WebkitHyphens: "none",
+    MozHyphens: "none",
+    msHyphens: "none",
+    hyphens: "none",
+    padding: "1em",
+    margin: "0.5em 0",
+    overflow: "auto",
+    background: "#1a1b26",
   },
-  "pre[class*=\"language-\"]::-moz-selection": {
-    "textShadow": "none",
-    "background": "#1a1b26"
+  'pre[class*="language-"]::-moz-selection': {
+    textShadow: "none",
+    background: "#1a1b26",
   },
-  "pre[class*=\"language-\"] ::-moz-selection": {
-    "textShadow": "none",
-    "background": "#1a1b26"
+  'pre[class*="language-"] ::-moz-selection': {
+    textShadow: "none",
+    background: "#1a1b26",
   },
-  "code[class*=\"language-\"]::-moz-selection": {
-    "textShadow": "none",
-    "background": "#1a1b26"
+  'code[class*="language-"]::-moz-selection': {
+    textShadow: "none",
+    background: "#1a1b26",
   },
-  "code[class*=\"language-\"] ::-moz-selection": {
-    "textShadow": "none",
-    "background": "#1a1b26"
+  'code[class*="language-"] ::-moz-selection': {
+    textShadow: "none",
+    background: "#1a1b26",
   },
-  "pre[class*=\"language-\"]::selection": {
-    "textShadow": "none",
-    "background": "#1a1b26"
+  'pre[class*="language-"]::selection': {
+    textShadow: "none",
+    background: "#1a1b26",
   },
-  "pre[class*=\"language-\"] ::selection": {
-    "textShadow": "none",
-    "background": "#1a1b26"
+  'pre[class*="language-"] ::selection': {
+    textShadow: "none",
+    background: "#1a1b26",
   },
-  "code[class*=\"language-\"]::selection": {
-    "textShadow": "none",
-    "background": "#1a1b26"
+  'code[class*="language-"]::selection': {
+    textShadow: "none",
+    background: "#1a1b26",
   },
-  "code[class*=\"language-\"] ::selection": {
-    "textShadow": "none",
-    "background": "#1a1b26"
+  'code[class*="language-"] ::selection': {
+    textShadow: "none",
+    background: "#1a1b26",
   },
-  ":not(pre) > code[class*=\"language-\"]": {
-    "color": "white",
-    "background": "#1a1b26",
-    "padding": "0.1em",
-    "borderRadius": "0.3em",
-    "whiteSpace": "normal"
+  ':not(pre) > code[class*="language-"]': {
+    color: "white",
+    background: "#1a1b26",
+    padding: "0.1em",
+    borderRadius: "0.3em",
+    whiteSpace: "normal",
   },
-  "comment": {
-    "color": "undefined",
-    "fontStyle": "italic"
+  comment: {
+    color: "undefined",
+    fontStyle: "italic",
   },
-  "keyword": {
-    "color": "#89DDFF"
+  keyword: {
+    color: "#89DDFF",
   },
-  "operator": {
-    "color": "#89DDFF"
+  operator: {
+    color: "#89DDFF",
   },
-  "punctuation": {
-    "color": "#444B6A"
+  punctuation: {
+    color: "#444B6A",
   },
-  "builtin": {
-    "color": "#FF9E64"
+  builtin: {
+    color: "#FF9E64",
   },
-  "number": {
-    "color": "#FF9E64"
+  number: {
+    color: "#FF9E64",
   },
-  "string": {
-    "color": "#9ECE6A"
+  string: {
+    color: "#9ECE6A",
   },
-  "symbol": {
-    "color": "#9ECE6A"
+  symbol: {
+    color: "#9ECE6A",
   },
-  "constant": {
-    "color": "#9ECE6A"
+  constant: {
+    color: "#9ECE6A",
   },
   "attr-name": {
-    "color": "#9ECE6A"
+    color: "#9ECE6A",
   },
-  "selector": {
-    "color": "#9ECE6A"
+  selector: {
+    color: "#9ECE6A",
   },
-  "hexcode": {
-    "color": "#9AA5CE"
+  hexcode: {
+    color: "#9AA5CE",
   },
-  "function": {
-    "color": "#0DB9D7"
+  function: {
+    color: "#0DB9D7",
   },
-  "tag": {
-    "color": "#F7768E"
+  tag: {
+    color: "#F7768E",
   },
-  "variable": {
-    "color": "#E0AF68"
+  variable: {
+    color: "#E0AF68",
   },
-  "char": {
-    "color": "#BB9AF7"
+  char: {
+    color: "#BB9AF7",
   },
-  "property": {
-    "color": "#9ABDF5"
+  property: {
+    color: "#9ABDF5",
   },
-  "inserted": {
-    "color": "#449DAB"
+  inserted: {
+    color: "#449DAB",
   },
-  "deleted": {
-    "color": "#914C54"
+  deleted: {
+    color: "#914C54",
   },
-  "changed": {
-    "color": "#6183BB"
+  changed: {
+    color: "#6183BB",
   },
-  "regex": {
-    "color": "#B4F9F8"
+  regex: {
+    color: "#B4F9F8",
   },
-  "important": {
-    "fontWeight": "bold"
+  important: {
+    fontWeight: "bold",
   },
-  "bold": {
-    "fontWeight": "bold"
+  bold: {
+    fontWeight: "bold",
   },
-  "italic": {
-    "fontStyle": "italic"
-  }
-}
+  italic: {
+    fontStyle: "italic",
+  },
+};
 export { editor, markdown };

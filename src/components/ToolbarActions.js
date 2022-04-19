@@ -27,7 +27,6 @@ const Split = styled.div`
 `;
 
 const ToolbarActions = ({ themeName, setDate, setTheme, openExport }) => {
-
   const handleSetTheme = (e) =>
     setTheme(e.target.checked ? themes.LIGHT : themes.DARK);
 

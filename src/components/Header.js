@@ -65,15 +65,16 @@ const Spacer = styled.li`
   width: 100%;
   height: 1px;
   list-style-type: none;
-  opacity: 0.1;
+  opacity: 0.05;
   background-color: ${({ theme }) => theme.text};
 `;
 const ActionsList = styled.ul`
   margin: 0;
   padding: 0;
-  top: 3rem;
+  top: 2.5rem;
   right: 0rem;
   width: 15rem;
+  overflow: hidden;
   position: absolute;
   border-radius: ${({ theme }) => theme.borderRadius};
   background-color: ${({ theme }) => theme.backgroundD1};
@@ -81,13 +82,14 @@ const ActionsList = styled.ul`
 `;
 const ActionsMenu = styled.div`
   position: relative;
-  margin: 1rem;
+  margin: 1rem 0.5rem;
   width: 2rem;
   height: 2rem;
   border-radius: 1.5rem;
   background-position: center center;
   background-size: cover;
   background-image: url(${({ backgroundImage }) => backgroundImage});
+  border: 2px solid ${({ theme }) => theme.backgroundL3};
 `;
 const Actions = styled.div`
   margin: 0 0.35rem 0 0;
@@ -113,8 +115,6 @@ const Actions = styled.div`
 const Header = ({ setDate, date, settings, logoutHandler }) => {
   const { user } = useAccessToken();
   const [hovering, setHovering] = React.useState(false);
-
-  const handleSetDate = (x) => (_e) => setDate(x.toISOString().split("T")[0]);
 
   return (
     <Container>

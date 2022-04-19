@@ -50,24 +50,27 @@ const App = ({ logoutHandler, setTheme }) => {
   }, [dailies.loading, dailies.data]);
 
   React.useEffect(() => {
-    if (settings.data && settings.data.settings && settings.data.settings.length > 0) {
+    if (
+      settings.data &&
+      settings.data.settings &&
+      settings.data.settings.length > 0
+    ) {
       setTheme(head(settings.data.settings).theme);
     }
     /* eslint-disable-next-line */
-  }, [settings.data])
+  }, [settings.data]);
 
   if (!!dailies.error) {
     console.log(dailies.error);
     return "error";
   }
 
-
   if (dailies.loading || settings.loading) {
-    return <Loader message="Loading..." />
+    return <Loader message="Loading..." />;
   }
 
   if (hasDailies(dailies.data) && hasSettings(settings.data)) {
-    const settingsObj = settings.data.settings[0]
+    const settingsObj = settings.data.settings[0];
     return (
       <BodyContainer>
         <Header
@@ -75,11 +78,14 @@ const App = ({ logoutHandler, setTheme }) => {
           setTheme={setTheme}
           date={date}
           setDate={setDate}
-          logoutHandler={logoutHandler} />
+          logoutHandler={logoutHandler}
+        />
         <DailyContainer>
           <CurrentDaily
             settings={settingsObj}
-            date={date} data={dailies.data} />
+            date={date}
+            data={dailies.data}
+          />
           <Toolbar
             settings={settingsObj}
             setTheme={setTheme}

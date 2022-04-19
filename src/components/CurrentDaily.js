@@ -38,8 +38,7 @@ const CurrentDaily = ({ settings, date, data }) => {
         variables: { id: previousDaily.id },
       })
       .then(({ data }) => {
-        if (!hasDailies)
-          return new Error("Should never ever happen")
+        if (!hasDailies) return new Error("Should never ever happen");
 
         const daily = head(data.dailies)
           .content.split("\n")

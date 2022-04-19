@@ -1,5 +1,5 @@
 import Toggle from "react-toggle";
-import "./react-toggle.css"
+import "./react-toggle.css";
 import styled from "styled-components";
 import chroma from "chroma-js";
 
@@ -19,7 +19,8 @@ const StyledToggle = styled(Toggle)`
     color: ${({ theme }) => theme.text};
   }
   &.react-toggle--focus .react-toggle-thumb {
-    box-shadow: 0px 0px 5px 3px ${({ theme }) => chroma(theme.accent).alpha(0.5)};
+    box-shadow: 0px 0px 5px 3px
+      ${({ theme }) => chroma(theme.accent).alpha(0.5)};
   }
 
   & .react-toggle-thumb {
