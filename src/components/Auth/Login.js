@@ -21,7 +21,7 @@ const Container = styled.div`
 `;
 
 const LoginModal = styled.div`
-padding: 2rem;
+  padding: 2rem;
   border-radius: ${({ theme }) => theme.borderRadius};
   background-color: ${({ theme }) => theme.backgroundD1};
   display: flex;
@@ -30,7 +30,7 @@ padding: 2rem;
   justify-items: center;
   align-content: center;
   align-items: center;
-text-align: center;
+  text-align: center;
 `;
 
 const Login = () => {
@@ -42,10 +42,13 @@ const Login = () => {
     <Container>
       <LoginModal>
         <h2>Welcome!</h2>
-        <p>Good to have you back... <br /> Please login / signup using the link below.</p>
+        <p>
+          Good to have you back... <br /> Please login / signup using the link
+          below.
+        </p>
         <ButtonGroup>
           <Button
-          iconLeft
+            iconLeft
             onClick={() => {
               loginWithRedirect({});
             }}
@@ -55,7 +58,7 @@ const Login = () => {
           </Button>
           <Button
             primary
-          iconLeft
+            iconLeft
             onClick={() => {
               loginWithRedirect({});
             }}

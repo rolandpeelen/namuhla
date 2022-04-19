@@ -28,7 +28,7 @@ const Container = styled.div`
   &:hover {
     background-color: ${({ theme }) => theme.backgroundL1};
     ${DatePickerContainer} {
-  background-color: ${({ theme }) => theme.background};
+      background-color: ${({ theme }) => theme.background};
     }
     ${ToolbarActionsContainer} {
       transform: translateY(0px);
@@ -49,8 +49,8 @@ const Toolbar = ({ settings, setTheme, openExport, data, date, setDate }) => {
         dateUpdated: new Date().toISOString(),
       },
       refetchQueries: [queries.GET_SETTINGS],
-    })
-  }
+    });
+  };
 
   return (
     <>

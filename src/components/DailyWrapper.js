@@ -11,7 +11,7 @@ import Loader from "./Loader";
 const Container = styled.div`
   height: 100%;
   overflow: auto;
-  width: ${({ editing }) => editing ? 70 : 60}vw;
+  width: ${({ editing }) => (editing ? 70 : 60)}vw;
 `;
 
 const DailyWrapper = ({ settings, id }) => {
@@ -38,8 +38,8 @@ const DailyWrapper = ({ settings, id }) => {
   };
 
   switch (true) {
-    case (loading || updating):
-      return <Loader message="Loading..." />
+    case loading || updating:
+      return <Loader message="Loading..." />;
     case !!error: {
       console.log(error);
       return "error";

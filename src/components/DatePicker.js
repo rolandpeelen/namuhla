@@ -24,37 +24,37 @@ const DateElement = styled(Button)`
       ? css`
           border: 2px solid
             ${theme.kind === kinds.DARK
-          ? theme.backgroundL3
-          : theme.backgroundD2};
+              ? theme.backgroundL3
+              : theme.backgroundD2};
         `
       : null}
 
   &:hover {
     box-shadow: 0px 0px 2px 0px
       ${({ theme }) =>
-    theme.kind === kinds.DARK ? theme.backgroundL3 : theme.backgroundD1};
+        theme.kind === kinds.DARK ? theme.backgroundL3 : theme.backgroundD1};
     background-color: ${({ theme }) =>
-    theme.kind === kinds.DARK ? theme.backgroundL3 : theme.backgroundD1};
+      theme.kind === kinds.DARK ? theme.backgroundL3 : theme.backgroundD1};
   }
 
   ${({ selected, theme }) =>
     selected
       ? css`
-            border-color: ${({ theme }) =>
-          theme.kind === kinds.DARK
-            ? theme.backgroundL2
-            : theme.backgroundD2};
+          border-color: ${({ theme }) =>
+            theme.kind === kinds.DARK
+              ? theme.backgroundL2
+              : theme.backgroundD2};
           background-color: ${({ theme }) =>
-          theme.kind === kinds.DARK
-            ? theme.backgroundL2
-            : theme.backgroundD2};
+            theme.kind === kinds.DARK
+              ? theme.backgroundL2
+              : theme.backgroundD2};
           color: ${theme.text};
           &:hover {
             cursor: default;
             background-color: ${({ theme }) =>
-          theme.kind === kinds.DARK
-            ? theme.backgroundL2
-            : theme.backgroundD2};
+              theme.kind === kinds.DARK
+                ? theme.backgroundL2
+                : theme.backgroundD2};
             color: ${theme.text};
           }
         `

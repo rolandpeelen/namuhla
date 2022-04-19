@@ -5,7 +5,7 @@ import * as Daily from "./Daily";
 import { Button } from "./Button";
 import * as Array from "../utils/Array.js";
 import * as Option from "../utils/Option.js";
-import { head, getToday, getDailyByDate } from "../utils/lib.js";
+import { getToday, getDailyByDate } from "../utils/lib.js";
 import queries from "../utils/queries.js";
 
 const COMBINED_ID = "combined-boi";

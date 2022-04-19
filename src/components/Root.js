@@ -4,7 +4,7 @@ import App from "./App";
 import Login from "./Auth/Login";
 import Loader from "./Loader";
 
-import { HttpLink, ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 
@@ -61,7 +61,7 @@ const GlobalStyles = createGlobalStyle`
           padding-bottom: 10rem;
     background: ${({ theme }) => theme.background};
     background-image: ${({ theme }) =>
-    `radial-gradient(farthest-corner at 50vw 100vh, ${theme.backgroundD1} 0%, ${theme.background} 50%)`} ;
+      `radial-gradient(farthest-corner at 50vw 100vh, ${theme.backgroundD1} 0%, ${theme.background} 50%)`} ;
     color: ${({ theme }) => theme.text};
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
@@ -115,7 +115,11 @@ const Root = () => {
       {state === authStates.UNAUTHORIZED && <Login />}
       {state === authStates.AUTHORIZED && client && (
         <ApolloProvider client={client}>
-          <App client={client} logoutHandler={handleLogout} setTheme={setTheme} />
+          <App
+            client={client}
+            logoutHandler={handleLogout}
+            setTheme={setTheme}
+          />
         </ApolloProvider>
       )}
     </ThemeProvider>

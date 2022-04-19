@@ -11,12 +11,14 @@ export const useDarkMode = () => {
   const [theme, setTheme] = React.useState(themes.LIGHT);
   const [darkModeReady, setDarkModeReady] = React.useState(false);
 
-  const handleSetTheme = React.useCallback((newTheme) => {
-    localStorage.setItem(THEME_KEY_LOCALSTORAGE, newTheme);
-    setTheme(newTheme);
-    /* eslint-disable-next-line */
-  }, [setTheme]);
-
+  const handleSetTheme = React.useCallback(
+    (newTheme) => {
+      localStorage.setItem(THEME_KEY_LOCALSTORAGE, newTheme);
+      setTheme(newTheme);
+      /* eslint-disable-next-line */
+    },
+    [setTheme]
+  );
 
   React.useEffect(() => {
     setTheme(getFromLocalStorage());
