@@ -77,17 +77,6 @@ const VimModeLabel = styled.h4`
   margin: 0 1rem;
 `;
 
-const ButtonGroupStyled = styled(ButtonGroup)`
-  display: flex;
-  align-content: center;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  ${Button} {
-    margin: 0 0.25rem;
-  }
-`;
-
 const ListItem = styled.li`
   & input[type="checkbox"] {
     margin-right: 5px;
@@ -378,14 +367,14 @@ const Edit = ({ settings, content, onUpdate, setEditing }) => {
           />
           <VimModeLabel id="vim-mode-label">Vim Bindings</VimModeLabel>
         </ToolbarContent>
-        <ButtonGroupStyled>
+        <ButtonGroup>
           <Button variant="secondary" onClick={(_e) => setEditing(false)}>
             Cancel
           </Button>
           <Button primary onClick={(_e) => onUpdate(localContent)}>
             Save
           </Button>
-        </ButtonGroupStyled>
+        </ButtonGroup>
       </Toolbar>
     </EditContainer>
   );
