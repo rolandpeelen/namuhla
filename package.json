@@ -1,5 +1,5 @@
 {
-  "name": "react-apollo-todo",
+  "name": "namuhla",
   "version": "0.1.0",
   "engines": {
     "node": ">=14.18.1"
@@ -28,6 +28,7 @@
     "remark-breaks": "^3.0.2",
     "remark-gemoji": "^7.0.1",
     "remark-gfm": "^3.0.1",
+    "rescript": "^9.1.4",
     "sass": "^1.49.11",
     "styled-components": "^5.3.5",
     "subscriptions-transport-ws": "0.11.0",
@@ -38,8 +39,9 @@
     "react-scripts": "5.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "rescript build -w",
+    "server": "react-scripts start",
+    "build": "rescript build && react-scripts build",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.js",
     "lint:fix": "eslint src/**/*.js --fix"
