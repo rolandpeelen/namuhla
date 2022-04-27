@@ -38,8 +38,10 @@ const DailyWrapper = ({ settings, id }) => {
   };
 
   switch (true) {
-    case loading || updating:
+    case loading:
       return <Loader message="Loading..." />;
+    case updating:
+      return <Loader message="Saving..." />;
     case !!error: {
       console.log(error);
       return "error";
