@@ -54,7 +54,6 @@ const ButtonGroup = styled.div`
   align-items: center;
   border: none;
   outline: none;
-  overflow: hidden;
   padding: 0;
   margin: 0;
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -62,8 +61,20 @@ const ButtonGroup = styled.div`
     if (transparent) return "transparent";
     return theme.background;
   }};
-  ${Button} {
+
+  & ${Button} {
     border-radius: 0;
+  }
+
+  & > ${Button}:first-child {
+    border-radius: ${({ theme }) => theme.borderRadius} 0 0
+      ${({ theme }) => theme.borderRadius};
+  }
+
+  & > ${Button}:last-child {
+    border-radius: 0 ${({ theme }) => theme.borderRadius}
+      ${({ theme }) => theme.borderRadius} 0;
+  }
 `;
 
 export { ButtonGroup, Button };
