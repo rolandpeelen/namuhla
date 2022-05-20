@@ -23,23 +23,28 @@ const DailyWrapper = ({ settings, id }) => {
   });
   const [updateDailyMutation] = useMutation(queries.UPDATE_DAILY);
 
-  const onUpdate = (content) => {
-    setUpdating(true);
+  const onSave = (content) =>
     updateDailyMutation({
       variables: {
         id: id,
         content,
         dateUpdated: new Date().toISOString(),
       },
-    }).then((_content) => {
+    });
+
+  const onUpdate = (content) => {
+    setUpdating(true);
+    onSave(content).then((_content) => {
       setUpdating(false);
       setEditing(false);
     });
   };
 
   switch (true) {
-    case loading || updating:
+    case loading:
       return <Loader message="Loading..." />;
+    case updating:
+      return <Loader message="Saving..." />;
     case !!error: {
       console.log(error);
       return "error";
@@ -57,6 +62,7 @@ const DailyWrapper = ({ settings, id }) => {
               settings={settings}
               setEditing={setEditing}
               onUpdate={onUpdate}
+              onSave={onSave}
             />
           ) : (
             <Daily.View

@@ -2,11 +2,12 @@ import { useQuery, useMutation, gql } from "@apollo/client";
 import React from "react";
 import styled from "styled-components";
 import * as Daily from "./Daily";
-import { Button } from "./Button";
+import { Button, ButtonGroup } from "./Button";
 import * as Array from "../utils/Array.js";
 import * as Option from "../utils/Option.js";
 import { getToday, getDailyByDate } from "../utils/lib.js";
 import queries from "../utils/queries.js";
+import EmojiPicker from "./EmojiPicker";
 
 const COMBINED_ID = "combined-boi";
 const COPY_EVENT = "copy";
@@ -59,6 +60,7 @@ const Modal = styled.div`
   justify-content: space-between;
   flex-direction: column;
   position: fixed;
+  border: 2px solid ${({ theme }) => theme.backgroundD2};
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.text};
   background-color: ${({ theme }) => theme.background};
@@ -73,6 +75,12 @@ const Footer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  padding: 1rem 0;
+
+  & ${ButtonGroup} div:first-child ${Button} {
+    border-radius: ${({ theme }) => theme.borderRadius} 0 0
+      ${({ theme }) => theme.borderRadius};
+  }
 `;
 
 const replace = {
@@ -191,27 +199,26 @@ const Exporter = ({ settings, date, dailies, closeExport }) => {
           )}
         </Body>
         <Footer>
-          <input
-            placeholder="Done Emoji"
-            disabled={updateThemeMutation.loading}
-            defaultValue={settings.doneEmoji}
-            onBlur={(e) => updateEmoji({ doneEmoji: e.target.value })}
-          />
-          <input
-            placeholder="Todo Emoji"
-            disabled={updateThemeMutation.loading}
-            defaultValue={settings.todoEmoji}
-            onBlur={(e) => updateEmoji({ todoEmoji: e.target.value })}
-          />
-          <input
-            placeholder="Not Done Emoji"
-            disabled={updateThemeMutation.loading}
-            defaultValue={settings.notDoneEmoji}
-            onBlur={(e) => updateEmoji({ notDoneEmoji: e.target.value })}
-          />
-          <Button invert onClick={copyToClipboard}>
-            Copy
-          </Button>
+          <ButtonGroup>
+            <EmojiPicker
+              title={"Todo"}
+              emoji={settings.todoEmoji}
+              onEmojiClick={(todoEmoji) => updateEmoji({ todoEmoji })}
+            />
+            <EmojiPicker
+              title={"Done"}
+              emoji={settings.doneEmoji}
+              onEmojiClick={(doneEmoji) => updateEmoji({ doneEmoji })}
+            />
+            <EmojiPicker
+              title={"Not Done"}
+              emoji={settings.notDoneEmoji}
+              onEmojiClick={(notDoneEmoji) => updateEmoji({ notDoneEmoji })}
+            />
+            <Button primary invert onClick={copyToClipboard}>
+              Copy
+            </Button>
+          </ButtonGroup>
         </Footer>
       </Modal>
       <ModalCover onClick={closeExport} />

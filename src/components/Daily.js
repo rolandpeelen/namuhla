@@ -275,7 +275,7 @@ const UPDATE_SETTINGS = gql`
   }
 `;
 
-const Edit = ({ settings, content, onUpdate, setEditing }) => {
+const Edit = ({ settings, content, onUpdate, onSave, setEditing }) => {
   const [localContent, setLocalContent] = React.useState(content);
   const [monaco, setMonaco] = React.useState(null);
   const [vimEditor, setVimEditor] = React.useState(null);
@@ -325,6 +325,7 @@ const Edit = ({ settings, content, onUpdate, setEditing }) => {
     VimMode.Vim.defineEx("wq", "wq", () => onUpdate(monaco.editor.getValue()));
     VimMode.Vim.defineEx("qa", "qa", () => setEditing(false));
     VimMode.Vim.defineEx("q", "q", () => setEditing(false));
+    VimMode.Vim.defineEx("w", "w", () => onSave(monaco.editor.getValue()));
     /* eslint-disable-next-line */
   }, [monaco]);
 

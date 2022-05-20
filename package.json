@@ -10,12 +10,14 @@
     "@auth0/auth0-react": "^1.8.0",
     "@auth0/auth0-spa-js": "1.21.0",
     "chroma-js": "^2.4.2",
+    "emoji-picker-react": "^3.5.1",
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-react-hooks": "4.4.0",
     "graphql": "16.3.0",
     "monaco-editor": "^0.33.0",
     "monaco-vim": "^0.3.2",
     "react": "18.0.0",
+    "react-detect-click-outside": "^1.1.2",
     "react-dom": "18.0.0",
     "react-icons": "^4.3.1",
     "react-markdown": "^8.0.2",
@@ -45,13 +47,20 @@
     "lint:fix": "eslint src/**/*.js --fix"
   },
   "eslintConfig": {
-    "extends": ["react-app", "react-app/jest"]
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "resolutions": {
     "styled-components": "^5"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
