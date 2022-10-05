@@ -39,7 +39,7 @@ const MonacoEditorStyled = styled(MonacoEditor)`
   margin-top: 50px;
   margin-bottom: 25px;
   width: 100% !important;
-  height: 100% !important;
+  height: 100vh !important;
   display: flex;
   line-height: 2;
   overflow: hidden;
@@ -47,6 +47,7 @@ const MonacoEditorStyled = styled(MonacoEditor)`
 `;
 const EditContainer = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -228,6 +229,7 @@ const View = ({ id, content, onUpdate, setEditing }) => {
 };
 
 const Status = styled.div`
+  z-index: 999;
   margin: 0.5rem 0;
   width: 80%;
   display: flex;
@@ -334,7 +336,7 @@ const Edit = ({ settings, content, onUpdate, onSave, setEditing }) => {
       <MonacoEditorStyled
         id="editor"
         disabled={true}
-        height={600}
+        height={700}
         theme={theme.kind === "dark" ? "tokyo-night" : "vs"}
         language="markdown"
         value={localContent}

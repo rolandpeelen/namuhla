@@ -7,10 +7,12 @@ import { useMutation } from "@apollo/client";
 import queries from "../utils/queries.js";
 
 const DatePickerContainer = styled.div`
+  border: ${({ theme }) => `5px solid ${theme.backgroundL1}`};
   padding: 0.5rem 0.6rem;
   border-radius: ${({ theme }) => theme.borderRadius};
   background-color: ${({ theme }) => theme.backgroundD1};
   transition: all 0.2s 0.1s ease-in-out;
+  box-shadow: ${({ theme }) => `0 0 20px ${ theme.backgroundD1 }`};
 `;
 const ToolbarActionsContainer = styled.div`
   padding: 0.25rem 0.6rem 0.6rem;
@@ -28,6 +30,7 @@ const Container = styled.div`
   &:hover {
     background-color: ${({ theme }) => theme.backgroundL1};
     ${DatePickerContainer} {
+      border: 5px solid transparent;
       background-color: ${({ theme }) => theme.background};
     }
     ${ToolbarActionsContainer} {
