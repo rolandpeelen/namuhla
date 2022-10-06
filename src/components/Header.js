@@ -92,7 +92,7 @@ const ActionsMenu = styled.div`
   border: 2px solid ${({ theme }) => theme.backgroundL3};
 `;
 const Actions = styled.div`
-  margin: 0 0.35rem 0 0;
+  margin: 0 1rem 0 0;
   padding: 0;
   & ${ActionsList} {
     opacity: 0;
