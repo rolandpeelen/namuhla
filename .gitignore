@@ -1,0 +1,16 @@
+**/.env
+*.merlin
+*.bs.js
+_esy
+.bsb.lock
+pm-debug.log
+yarn-error.log
+.eslintcache
+
+node_modules/
+bundleOutput/
+build/
+_build/
+lib/
+
+node_modules
