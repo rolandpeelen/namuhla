@@ -2,6 +2,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { ButtonGroup, Button } from "./Button.js";
+import { of_string, to_html } from "../omd/omd.bs.js";
 import { maybeCorrectSourcePosition } from "../utils/markdown.js";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
@@ -31,7 +32,7 @@ const Container = styled.div`
   }
   & a:hover {
     color: ${({ theme }) =>
-      theme.kind === "dark" ? theme.accentL1 : theme.accentD1};
+    theme.kind === "dark" ? theme.accentL1 : theme.accentD1};
   }
 `;
 
@@ -163,19 +164,20 @@ const render = (content, onUpdate, sourcePosition) => (node, i, arr) => {
 
 const renderListItem =
   (content, onUpdate) =>
-  ({ node, sourcePosition }) => {
-    return (
-      <ListItem>
-        {node.children.map(render(content, onUpdate, sourcePosition))}
-      </ListItem>
-    );
-  };
+    ({ node, sourcePosition }) => {
+      return (
+        <ListItem>
+          {node.children.map(render(content, onUpdate, sourcePosition))}
+        </ListItem>
+      );
+    };
 
 const StyledSyntaxHighlighter = styled(SyntaxHighlighter)`
   border-radius: ${({ theme }) => theme.borderRadius};
 `;
 
 const View = ({ id, content, onUpdate, setEditing }) => {
+  console.log(to_html(of_string(content)));
   const handleKeyDown = (event) => event.keyCode === 13 && setEditing(true);
   const theme = React.useContext(ThemeContext);
 
