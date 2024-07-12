@@ -5,6 +5,7 @@ import Header from "./Header";
 import Exporter from "./Exporter";
 import Toolbar from "./Toolbar";
 import Loader from "./Loader";
+import { make as ReasonApp } from "./ReasonApp.bs.js";
 
 import queries from "../utils/queries.js";
 import { getToday, head } from "../utils/lib.js";
@@ -73,6 +74,7 @@ const App = ({ logoutHandler, setTheme }) => {
     const settingsObj = settings.data.settings[0];
     return (
       <BodyContainer>
+        <ReasonApp />
         <Header
           settings={settingsObj}
           setTheme={setTheme}
